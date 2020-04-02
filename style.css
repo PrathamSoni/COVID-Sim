@@ -1,139 +1,143 @@
-body {
-  margin: 0px auto 100px 0px;
-  padding: 0;
-  background: #ffffff;
-  color: #000000;
-  font-size: 14px;
-  width: 100%;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-}
-
-/* General & 'Reset' Stuff */
-
-.container {
-  width: 90%;
-  max-width: 640px;
-  margin: auto;
-}
-
-h1 {
-  font-size: 32px;
-  line-height: 1.5;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  margin: 20px auto 30px 0px;
+*
+{
+  font-family: 'Overpass';
+  font-size: 22px;
   font-weight: bold;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  color: #000000;
-  -webkit-font-smoothing: antialiased;
 }
 
-h2 {
-  margin: 30px auto 20px 0px;
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: #606060;
+#options
+{
+    float:left;
+    height:400px;
+    width:20%;
+    padding:0 10px;
+    background-color: #f6fafe;
 }
 
-h3, h4, h5, h6 {
-  font-weight: normal;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  color: #404040;
+#policy,#ppe
+{
+  padding:25 0px;
 }
 
-/* Main Content
-*/
-
-#main_content {
-  width: 100%;
-  -webkit-font-smoothing: antialiased;
+#statistics
+{
+  float:left;
+  height:400px;
+  width:20%;
+  padding:0 10px;
 }
 
-ul {
-  padding: 0;
-}
-
-ul li {
-  list-style: none;
-}
-
-ul li:before {
-  content: ">>";
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  margin-left: 10px;
-  margin-right: 10px;
+#ball-simulation0
+{
   float: left;
+  padding: 0px 25px 25px;
 }
 
-ul li p {
-  margin: 0;
+#defaultCanvas1
+{
+  width:25%;
+  height:25%;
 }
 
-table.parameters {
-  margin-bottom: 20px;
+.container
+{
+  width:80%;
+  margin: 0 auto;
 }
 
-table.parameters td {
-  white-space: nowrap;
-  padding: 0 20px 0 0;
-  text-align: left;
+#sick-stat0,#immune-stat0
+{
+  width:100%;
+  color: #A90D0E;
+  font-size: 2vw;
 }
 
-td.restart-button {
-  width: 99%;
-  padding: 0;
-  vertical-align: bottom;
-  text-align: right;
-}
-
-input.slider {
- -webkit-appearance: none;
-  background: #000000;
-  outline: none;
-}
-
-input#restart-button {
-  margin-left: 20px;
-  background-color: #FFFFFF;
-  border: 2px solid;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-}
-
-table.statistics {
+#ball-graph0
+{
   width: 100%;
-  border-collapse: collapse;
 }
 
-table.statistics td {
-  width: 20%;
-  font-size: 14px;
-  text-align: center;
-  vertical-align: bottom;
+#defaultCanvas0
+{
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-div#ball-simulation {
+#topRow
+{
+  display: flex;
+  width:85%;
   margin: auto;
 }
 
-div#ball-graph {
-  margin: 20px auto 5px auto;
+/* The container */
+.checkcontainer {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-hr {
-  height: 0;
-  border: 0;
-  border-bottom: 1px dashed #a0a0a0;
-  color: #b5e853;
+/* Hide the browser's default radio button */
+.checkcontainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
-/* Links
-   a, a:hover, a:visited
-*/
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #FFFFFF;
+  border-style: solid;
+  border-radius: 50%;
+  border-color: #DCDCDC;
+  border-width: 2px;
+}
 
-a {
-  color: #0000ff;
+/* On mouse-over, add a grey background color */
+.checkcontainer:hover input ~ .checkmark {
+  border-color: #0D68BB;
+  border-width: 2px;
+}
+
+/* When the radio button is checked, add a blue background */
+.checkcontainer input:checked ~ .checkmark {
+  border-radius: 50%;
+  border-color: #0D68BB;
+  border-width: 2px;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  background-color: #0D68BB;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.checkcontainer input:checked ~ .checkmark:after {
+  display: block;
+  border-color: #0D68BB;
+}
+
+/* Style the indicator (dot/circle) */
+.checkcontainer .checkmark:after {
+ 	top: 4px;
+	left: 4px;
+	width: 17px;
+	height: 17px;
+    border-radius: 50%;
 }

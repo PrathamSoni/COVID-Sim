@@ -275,12 +275,12 @@ function Model() {
         let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/this.population) ;
         let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/this.population) ;
         let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/this.population) ;
-        let de = Math.round(100 * this.deadStat[this.deadStat.length-1]/this.population) ;
-        document.getElementById('healthy-stat0').innerHTML = he;
-        document.getElementById('immune-stat0').innerHTML = im;
-        document.getElementById('sick-stat0').innerHTML = si;
+        let de = this.deadStat[this.deadStat.length-1];
+        //document.getElementById('healthy-stat0').innerHTML = he;
+        document.getElementById('immune-stat0').innerHTML = im + "%";
+        document.getElementById('sick-stat0').innerHTML = si + "%";
         document.getElementById('dead-stat0').innerHTML = de;
-        document.getElementById('current-time0').innerHTML = (this.completionTime / FRAME_RATE).toFixed(1);
+        //document.getElementById('current-time0').innerHTML = (this.completionTime / FRAME_RATE).toFixed(1);
 
         /* the bars */
         graph.background("#FFFFFF");
