@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="SocialDistancingSimulator0.js"></script>
+
+
+
+
+  <link rel="stylesheet" href="style.css">
+  <title>Social distancing simulator</title
+</head>
+
+<body>
+  <div class="container">
+    <h1>Corona Sim</h1>
+    Quarantine policy
+    <table class='parameters'>
+    <tr>
+    <td><input type="radio" id="leave" name="quarantine" value="leave">
+    <label for="leave">Sick Leave</label><br></td>
+    </tr>
+    <tr>
+    <td><input type="radio" id="other" name="quarantine" value="stay" checked>
+      <label for="other">No Sick Leave</label>
+    </tr>
+    </table>
+     PPE Level
+      <table class='parameters'>
+      <tr>
+      <td><input type="radio" id="n95" name="ppe" value="n95">
+      <label for="n95">N95 Respirator</label><br></td>
+      </tr>
+      <tr>
+      <td><input type="radio" id="mask" name="ppe" value="mask">
+        <label for="mask">Surgical Mask</label>
+      </tr>
+      <tr>
+      <td>  <input type="radio" id="none" name="ppe" value="none" checked>
+        <label for="none">None</label></td>
+      </tr>
+      </table>
+
+  <input id='restart-button0' type='submit' value='Restart'/>
+
+  <div id="ball-simulation0"></div>
+
+  <table class="statistics">
+    <tr>
+    <td><span style="font-size: 32px; color: #000000">●</span> healthy</td>
+    <td><span style="font-size: 32px; color: #FFFF40">●</span> recovered</td>
+    <td><span style="font-size: 32px; color: #FF0000">●</span> sick</td>
+    <td><span style="font-size: 32px; color: #808080">●</span> deceased</td>
+    <td>time</td>
+    </tr>
+    <tr>
+    <td><span id="healthy-stat0"></span>%</td>
+    <td><span id="immune-stat0"></span>%</td>
+    <td><span id="sick-stat0"></span>%</td>
+    <td><span id="dead-stat0"></span>%</td>
+    <td><span id="current-time0"></span>s</td>
+    </tr>
+  </table>
+
+  <div id="ball-graph0"></div>
+  </div>
+
+</body>
+</html>
