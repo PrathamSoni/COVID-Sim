@@ -5,7 +5,7 @@
   <script language="javascript" type="text/javascript" src="SocialDistancingSimulator0.js"></script>
 
 
-
+  <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
 
   <link rel="stylesheet" href="style.css">
   <title>Social distancing simulator</title
@@ -13,57 +13,82 @@
 
 <body>
   <div class="container">
-    <h1>Corona Sim</h1>
-    Quarantine policy
-    <table class='parameters'>
-    <tr>
-    <td><input type="radio" id="leave" name="quarantine" value="leave">
-    <label for="leave">Sick Leave</label><br></td>
-    </tr>
-    <tr>
-    <td><input type="radio" id="other" name="quarantine" value="stay" checked>
-      <label for="other">No Sick Leave</label>
-    </tr>
-    </table>
-     PPE Level
-      <table class='parameters'>
-      <tr>
-      <td><input type="radio" id="n95" name="ppe" value="n95">
-      <label for="n95">N95 Respirator</label><br></td>
-      </tr>
-      <tr>
-      <td><input type="radio" id="mask" name="ppe" value="mask">
-        <label for="mask">Surgical Mask</label>
-      </tr>
-      <tr>
-      <td>  <input type="radio" id="none" name="ppe" value="none" checked>
-        <label for="none">None</label></td>
-      </tr>
-      </table>
+    <h1>Transmission Simulator</h1>
+    <div id="topRow">
+      <div id="options">
+        <div id="policy">
+          <span class="OptionsLabel">Quarantine policy</span>
+          <table class='parameters'>
+            <tr>
+              <td>
+                <label class="checkcontainer">Sick Leave
+                  <input type="radio" id="leave" name="quarantine" value="leave">
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="checkcontainer">No Sick Leave
+                  <input type="radio" id="other" name="quarantine" value="stay" checked="checked">
+                  <span class="checkmark"></span>
+                </label>
+            </tr>
+          </table>
+        </div>
 
-  <input id='restart-button0' type='submit' value='Restart'/>
+        <div id="ppe">
+          <span class="OptionsLabel">PPE Level</span>
+          <table class='parameters'>
+            <tr>
+              <td>
+                <label class="checkcontainer">N95 Respirator
+                  <input type="radio" id="n95" name="ppe" value="n95">
+                <span class="checkmark"></span></label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="checkcontainer">Surgical Mask
+                  <input type="radio" id="mask" name="ppe" value="mask">
+                <span class="checkmark"></span></label>
+            </tr>
+            <tr>
+              <td>
+                <label class="checkcontainer">None
+                  <input type="radio" id="none" name="ppe" value="none" checked="checked">
+                <span class="checkmark"></span></label>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <input id='restart-button0' type='submit' value='Restart'/>
+      </div>
 
-  <div id="ball-simulation0"></div>
 
-  <table class="statistics">
-    <tr>
-    <td><span style="font-size: 32px; color: #000000">●</span> healthy</td>
-    <td><span style="font-size: 32px; color: #FFFF40">●</span> recovered</td>
-    <td><span style="font-size: 32px; color: #FF0000">●</span> sick</td>
-    <td><span style="font-size: 32px; color: #808080">●</span> deceased</td>
-    <td>time</td>
-    </tr>
-    <tr>
-    <td><span id="healthy-stat0"></span>%</td>
-    <td><span id="immune-stat0"></span>%</td>
-    <td><span id="sick-stat0"></span>%</td>
-    <td><span id="dead-stat0"></span>%</td>
-    <td><span id="current-time0"></span>s</td>
-    </tr>
-  </table>
+    <div id="ball-simulation0"></div>
+
+
+    <div id = "statistics">
+      <div id="topStats">
+        <div id="sickStat">
+          <span id="sick-stat0">0%</span> Positive Patients
+        </div>
+        <div id="immuneStat">
+          <span id="immune-stat0">0%</span> Immunity
+        </div>
+      </div>
+      <div id="deathStats">
+        Death Toll
+        <span id="dead-stat0"></span>
+      </div>
+    </div>
+  </div>
+    </div>
 
   <div id="ball-graph0"></div>
-  </div>
+
+
 
 </body>
 </html>
