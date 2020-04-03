@@ -14,6 +14,10 @@
     background-color: #f6fafe;
 }
 
+.OptionsLabel
+{
+  color:#0D67BD;
+}
 #policy,#ppe
 {
   padding:25 0px;
@@ -31,12 +35,21 @@
 {
   float: left;
   padding: 0px 25px 25px;
+  width:40vw;
+  height:25vw;
+}
+
+label
+{
+  color: #7F7F7F;
+  text-align: left;
+  font-size: 1em !important;
 }
 
 #defaultCanvas1
 {
-  width:25%;
-  height:25%;
+  width:100% !important;
+  height:100% !important;
 }
 
 .container
@@ -45,16 +58,42 @@
   margin: 0 auto;
 }
 
-#sick-stat0,#immune-stat0
+#sick-stat0
 {
   width:100%;
   color: #A90D0E;
-  font-size: 2vw;
+  font-size: 3em;
 }
 
+#immune-stat0
+{
+  width:100%;
+  color: #35A835;
+  font-size: 3em;
+}
+#attribution
+{
+  font-size: .5em;
+}
+#deathStats
+{
+  padding-top: 8vh;
+  color: #7F7F7F;
+}
+
+#dead-stat0
+{
+  font-size: 2em;
+}
 #ball-graph0
 {
   width: 100%;
+  padding-bottom: 6vh;
+}
+
+#ball-graph0>h2
+{
+  display: inline-block;
 }
 
 #defaultCanvas0
@@ -62,6 +101,36 @@
   display: flex;
   margin-left: auto;
   margin-right: auto;
+}
+
+#bottomBar
+{
+  width:100%;
+  display:flex;
+  background-color: #F4F4F4;
+}
+table{
+    table-layout: fixed;
+}
+
+th{
+  word-wrap:break-word;
+}
+td
+{
+  font-size: 18px;
+  text-align: center;
+  word-wrap:break-word;
+}
+.InfectedCivilian{
+text-align: center;
+  color: #A90D0E;
+}
+
+#legend
+{
+  display: inline-block;
+  margin:auto;
 }
 
 #topRow

@@ -8,10 +8,10 @@
 */
 
 /* Colors of sick, healthy, immune and dead balls. */
-const SICK_COLOR = "#FF0000";
-const HEALTHY_COLOR = "#ffffff";
-const IMMUNE_COLOR = "#FFFF40";
-const DEAD_COLOR = "#808080";
+const SICK_COLOR = "#A83535";
+const HEALTHY_COLOR = "#A6A6A6";
+const IMMUNE_COLOR = "#35A835";
+const DEAD_COLOR = "#F7A9A9";
 
 const FRAME_RATE = 30;
 
@@ -23,7 +23,7 @@ let arenaHeight = 480;
 /* The area where the graph is drawn */
 var graph; /* initalized below */
 let graphWidth = 640;  /* the width of the statistics bar */
-let graphHeight = 200; /* the height of statistics bar */
+let graphHeight = 100; /* the height of statistics bar */
 
 /* Other GUI elements */
 let socialDistanceSlider = undefined ;
@@ -283,10 +283,10 @@ function Model() {
         //document.getElementById('current-time0').innerHTML = (this.completionTime / FRAME_RATE).toFixed(1);
 
         /* the bars */
-        graph.background("#FFFFFF");
+        graph.background("#E7E7E7");
         graph.noStroke();
         /* healthy balls */
-        graph.fill(HEALTHY_COLOR);
+        graph.fill("#E7E7E7");
         graph.rect(x0, y0, x1 - x0, graphHeight);
         /* dead balls */
         graph.fill(DEAD_COLOR);
@@ -316,8 +316,6 @@ function Model() {
             graph.vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
         }
         graph.endShape(graph.CLOSE);
-        graph.stroke("#000000");
-        graph.strokeWeight(4);
         graph.noFill();
         graph.rect(x0, y0, graphWidth, graphHeight);
     };
@@ -361,18 +359,18 @@ arena = new p5(
             }
             else {
                 model.refreshParameters();
-                arena.background("#000000");
+                arena.background("#E7E7E7");
 
 
                 /* arena */
                 arena.noStroke();
 
                 arena.fill("#ADD8E6");
-                arena.rect(arenaWidth/2-75, arenaHeight/2-75, 150, 150,5,5,5,5)
-                arena.fill(230);
-                arena.rect(arenaWidth/2-10, arenaHeight/2-40, 20, 80);
-                arena.rect(arenaWidth/2-40, arenaHeight/2-10, 80, 20);
+                //arena.rect(arenaWidth/2-75, arenaHeight/2-75, 150, 150,5,5,5,5)
 
+                arena.rect(arenaWidth/2-10, arenaHeight/2-60, 20, 120);
+                arena.rect(arenaWidth/2-50, arenaHeight/2-10, 100, 20);
+                arena.fill("#BAD7F0");
 
 
                 /* dead balls first */
