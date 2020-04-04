@@ -10,7 +10,7 @@
 /* Colors of sick, healthy, immune and dead balls. */
 const SICK_COLOR = "#A83535";
 const HEALTHY_COLOR = "#A6A6A6";
-const IMMUNE_COLOR = "#35A835";
+const IMMUNE_COLOR = "#A83535";
 const DEAD_COLOR = "#F7A9A9";
 
 const FRAME_RATE = 30;
@@ -22,7 +22,7 @@ let arenaHeight = 480;
 
 /* The area where the graph is drawn */
 var graph; /* initalized below */
-let graphWidth = 640;  /* the width of the statistics bar */
+let graphWidth = 20*FRAME_RATE;  /* the width of the statistics bar */
 let graphHeight = 100; /* the height of statistics bar */
 
 /* Other GUI elements */
@@ -32,14 +32,15 @@ let sickTimeSlider = undefined ;
 let restartButton = undefined ;
 
 /* ball status */
+let QUARANTINE=-3;
 let DEAD = -2;
 let HEALTHY = -1;
 let IMMUNE = 0;
 /* positive values are time-to-still-be-sick */
 
 /* gather parameters*/
-var quarantine;
-var ppe;
+var quarantine="stay";
+var ppe="none";
 
 function debug(msg) {
     document.getElementById('debug').innerHTML = document.getElementById('debug').innerHTML + msg;
@@ -61,33 +62,57 @@ function Ball(x, y, direction, id, model, role) {
     this.isImmune = function () { return (this.status == IMMUNE); };
     this.isDead = function () { return (this.status == DEAD); };
     this.isSick = function () { return (this.status > 0) ; };
-    if(this.role=="Normal"&&.9>Math.random()&&id!=0){
+    if(this.role=="Normal"&&.8>Math.random()&&id!=0){
       this.stationary=true;
     }
-    /* interact with a ball whose status is s. */
-    this.contactWith = function (s) {
+    /* interact with a ball whose status is s and whose role is r. */
+    this.contactWith = function (s,r) {
         if (this.isHealthy() && (s > 0)) {
-          let random=Math.random();
-          if(this.role=="Doctor"){
+          if(r=="Doctor"){
+            let random=Math.random();
             if(ppe=="n95"){
-              if(random<.05){
-                this.status = this.model.sickTime;
-              }
-
+              if(random<.05){this.makeSick();}
             }
             if(ppe=="mask"){
-              if(random<.5){
-                this.status = this.model.sickTime;
-              }
+              if(random<.5){this.makeSick();}
             }
-            if(ppe=="none"){
-            this.status = this.model.sickTime;
-            }
+            if(ppe=="none"){this.makeSick();}
           }
-          else{this.status = this.model.sickTime;}
+
+          else{this.makeSick();}
+
         }
     }
+    this.makeSick=function(){
+      let random=Math.random();
+      if(this.role=="Doctor"){
+        if(ppe=="n95"){
+          if(random<.05){
+            this.status = this.model.sickTime;
+          }
 
+        }
+        if(ppe=="mask"){
+          if(random<.5){
+            this.status = this.model.sickTime;
+          }
+        }
+        if(ppe=="none"){
+        this.status = this.model.sickTime;
+        }
+      }
+      else{
+        this.status = this.model.sickTime;
+        if(Math.random()>.8){
+        this.stationary=false;
+        /*calculate initial direction towards hospital*/
+        let dx=arenaWidth/2-this.x;
+        let dy=arenaHeight/2-this.y;
+        let baseangle=Math.atan(dy/dx);
+        if(dx<0){this.direction=baseangle+Math.PI;}
+        else{this.direction=baseangle;}}
+      }
+    }
     this.statusColor = function () {
         if (this.isHealthy()) { return HEALTHY_COLOR; }
         else if (this.isImmune()) { return IMMUNE_COLOR; }
@@ -104,21 +129,46 @@ function Ball(x, y, direction, id, model, role) {
         }
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
-              if(this.x>arenaWidth/2+70){
+              //bounce far right
+              if(this.x>arenaWidth/2+50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
                 this.direction=-this.direction+Math.PI;
                 this.x--;
                 }
-                if(this.x<arenaWidth/2-70){
+              //right
+                if(this.x>arenaWidth/2+15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
                   this.direction=-this.direction+Math.PI;
-                  this.x++;
+                  this.x-=2;
                   }
-              if(this.y<arenaHeight/2-70){
+                //far left
+                if(this.x<arenaWidth/2-50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+                  this.direction=-this.direction+Math.PI;
+                  this.x+=2;
+                  }
+
+                //left
+                  if(this.x<arenaWidth/2-15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
+                    this.direction=-this.direction+Math.PI;
+                    this.x+=2;
+                    }
+              //far bottom
+              if(this.y<arenaHeight/2-55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
                 this.direction=-1*this.direction;
-                this.y++;
+                this.y+=2;
               }
-              if(this.y>arenaHeight/2+70){
+              //bottom
+              if(this.y<arenaHeight/2-15&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
                 this.direction=-1*this.direction;
-                this.y--;
+                this.y+=2;
+              }
+              //far top
+              if(this.y>arenaHeight/2+55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+                this.direction=-1*this.direction;
+                this.y-=2;
+              }
+              //top
+              if(this.y>arenaHeight/2+15&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+                this.direction=-1*this.direction;
+                this.y-=2;
               }
               this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/2 + arenaWidth) % arenaWidth ;
               this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/2 + arenaHeight) % arenaHeight ;
@@ -140,16 +190,20 @@ function Ball(x, y, direction, id, model, role) {
             let distance2 = dx*dx + dy*dy;
             if (distance2 < this.diameter * this.diameter) {
                 let s = this.status;
-                this.contactWith(others[i].status);
-                others[i].contactWith(s);
                 this.direction = Math.random() * 2 * Math.PI;
                 others[i].direction = Math.random() * 2 * Math.PI;
+                this.contactWith(others[i].status);
+                others[i].contactWith(s);
+
             }
         }
     }
 
     this.display = function () {
         arena.fill(this.statusColor());
+        if(model.isFinished()&&this.isDead){
+          this.diameter=2*this.diameter;
+        }
         if(this.role=="Normal"){
           arena.ellipse(this.x, this.y, this.diameter, this.diameter);
       }
@@ -171,7 +225,7 @@ function Model() {
     this.initialize = function(socialDistance, mortality, sickTime) {
         this.socialDistance = socialDistance; /* proportion of stationary balls */
         this.sickTime = sickTime; /* how long a ball is animation frames */
-        this.maxTime = graphWidth * 5; /* maximum time of simulation */
+        this.maxTime = graphWidth; /* maximum time of simulation */
         this.mortality = mortality; /* how likely an infected ball dies */
         this.population = 500; /* initial population */
 
@@ -188,7 +242,7 @@ function Model() {
         for (let i = 0; i < this.population; i++) {
             let x=Math.random() * arenaWidth;
             let y=Math.random() * arenaHeight;
-            while((x>arenaWidth/2-75&&x<arenaWidth/2+75)&&(y>arenaHeight/2-75&&y<arenaHeight/2+75)){
+            while(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-02&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65))){
                x=Math.random() * arenaWidth;
                y=Math.random() * arenaWidth;
 
@@ -196,7 +250,7 @@ function Model() {
             this.balls.push(new Ball(x,y, Math.random() * 2 * Math.PI, i, this, "Normal"));
         }
         for(let i=0; i<30; i++){
-          this.balls.push(new Ball(Math.random()*150 +arenaWidth/2-75, Math.random() * 150+arenaHeight/2-75, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
+          this.balls.push(new Ball(Math.random()*30 +arenaWidth/2-15, Math.random() * 30+arenaHeight/2-15, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
         }
         /* Make one of them sick */
         this.balls[0].contactWith(this.sickTime);
@@ -205,7 +259,7 @@ function Model() {
     this.refreshParameters = function () {
         this.socialDistance = 0.0;
         this.mortality = .04;
-        this.sickTime = 5 * FRAME_RATE;
+        this.sickTime = 5 * FRAME_RATE/3;
         for(let i=0; i<document.getElementsByName("quarantine").length;i++){
           if(document.getElementsByName("quarantine")[i].checked){
             quarantine=document.getElementsByName("quarantine")[i].value;
@@ -223,13 +277,12 @@ function Model() {
     }
 
     this.isFinished = function () {
-        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 ||
-                                          (this.currentTime >= graphWidth && this.currentTime > this.completionTime));
+        return (this.currentTime > 0) && (this.currentTime >= this.maxTime-1 ||(this.currentTime >= graphWidth && this.currentTime > this.completionTime));
     };
 
     /* The velocity of balls, depending on social distance. */
    this.velocity = function () {
-       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 400 ;
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 250 ;
        return velocity;
    }
 
@@ -243,8 +296,8 @@ function Model() {
         let he = 0;
         //restrict ball population to first 500
         for (let b of this.balls.slice(0,this.population)) {
-            if (b.isImmune()) { im++; }
-            else if (b.isDead()) { de++; }
+            if (b.isImmune()) { im++;si++; }
+            else if (b.isDead()) { si++; de++; }
             else if (b.isSick()) { si++; }
             else { he++; }
         }
@@ -289,33 +342,33 @@ function Model() {
         graph.fill("#E7E7E7");
         graph.rect(x0, y0, x1 - x0, graphHeight);
         /* dead balls */
-        graph.fill(DEAD_COLOR);
+        /*graph.fill(DEAD_COLOR);
         graph.beginShape();
         graph.vertex(x1, y1);
         graph.vertex(x0, y1);
         for (let t = 0; t < this.deadStat.length; t++) {
             graph.vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
         }
-        graph.endShape(graph.CLOSE);
+        graph.endShape(graph.CLOSE);*/
         /* sick balls */
         graph.fill(SICK_COLOR);
         graph.beginShape();
         for (let t = 0; t < this.deadStat.length; t++) {
-            graph.vertex(x0 + t * dx, y1 - this.deadStat[t] * dy);
+            graph.vertex(x0 + t * dx, y1);
         }
         for (let t = this.sickStat.length; t >= 0; t--) {
-            graph.vertex(x0 + t* dx, y1 - (this.sickStat[t] + this.deadStat[t]) * dy);
+            graph.vertex(x0 + t* dx, y1 - (this.sickStat[t] ) * dy);
         }
         graph.endShape(graph.CLOSE);
         /* immune balls */
-        graph.fill(IMMUNE_COLOR);
+        /*graph.fill(IMMUNE_COLOR);
         graph.beginShape();
         graph.vertex(x1, y0);
         graph.vertex(x0, y0);
         for (let t = 0; t < this.immuneStat.length; t++) {
             graph.vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
         }
-        graph.endShape(graph.CLOSE);
+        graph.endShape(graph.CLOSE);*/
         graph.noFill();
         graph.rect(x0, y0, graphWidth, graphHeight);
     };
@@ -325,6 +378,7 @@ function Model() {
 let model = new Model();
 model.initialize(0.5, 0.1, 150);
 model.refreshParameters();
+
 graph = new p5(
     (graph) => {
         graph.setup = () => {
@@ -346,9 +400,10 @@ arena = new p5(
             socialDistanceSlider = arena.select('#social-distance-slider0');
             mortalitySlider = arena.select('#mortality-slider0');
             sickTimeSlider = arena.select('#sick-time-slider0');
-            model.refreshParameters();
             restartButton = arena.select('#restart-button0');
-            restartButton.mousePressed(() => { model.restart (); document.getElementById("restart-button0").setAttribute("src", "images/Button_1.png");document.getElementById("RestartButtonLabel").innerHTML = "RESET";});
+            restartButton.mousePressed(() => { model.restart ();
+            model.refreshParameters(); document.getElementById("restart-button0").setAttribute("src", "images/Button_1.png");document.getElementById("RestartButtonLabel").innerHTML = "RESET";});
+
             arena.frameRate(FRAME_RATE);
             arena.ellipseMode(arena.CENTER);
 
@@ -360,7 +415,7 @@ arena = new p5(
               document.getElementById("RestartButtonLabel").innerHTML = "START";
             }
             else {
-                model.refreshParameters();
+                //model.refreshParameters();
                 arena.background("#E7E7E7");
 
 
@@ -370,11 +425,15 @@ arena = new p5(
                 arena.fill("#ADD8E6");
                 //arena.rect(arenaWidth/2-75, arenaHeight/2-75, 150, 150,5,5,5,5)
 
-                arena.rect(arenaWidth/2-10, arenaHeight/2-60, 20, 120);
-                arena.rect(arenaWidth/2-50, arenaHeight/2-10, 100, 20);
+                arena.rect(arenaWidth/2-15, arenaHeight/2-60, 30, 120);
+                arena.rect(arenaWidth/2-55, arenaHeight/2-15, 110, 30);
                 arena.fill("#BAD7F0");
-
-
+                if(quarantine=="leave"){
+                  arena.strokeWeight(2);
+                  arena.stroke(0);
+                  arena.circle(arenaWidth/2,arenaHeight/2,20)
+                }
+                arena.noStroke();
                 /* dead balls first */
                 for (let b of model.balls) {
                     if (b.isDead()) { b.display(); }
