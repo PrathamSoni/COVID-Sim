@@ -410,7 +410,7 @@ arena = new p5(
             sickTimeSlider = arena.select('#sick-time-slider0');
             restartButton = arena.select('#restart-button0');
             restartButton.mousePressed(() => { model.restart ();
-            model.refreshParameters();});
+            model.refreshParameters(); document.getElementById("restart-button0").setAttribute("src", "images/Button_1.png");document.getElementById("RestartButtonLabel").innerHTML = "RESET";});
 
             arena.frameRate(FRAME_RATE);
             arena.ellipseMode(arena.CENTER);
@@ -419,6 +419,8 @@ arena = new p5(
 
         arena.draw = () => {
             if (model.isFinished()) {
+              document.getElementById("restart-button0").setAttribute("src", "images/Button_0.png");
+              document.getElementById("RestartButtonLabel").innerHTML = "START";
             }
             else {
                 //model.refreshParameters();

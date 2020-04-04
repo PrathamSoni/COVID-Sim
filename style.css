@@ -1,49 +1,67 @@
 *
 {
-  font-family: 'Overpass';
-  font-size: 22px;
+  font-family: 'Helvetica';
+  font-size: 1.2vw;
   font-weight: bold;
+  color: #7F7F7F;
 }
 
+h1
+{
+  margin: 0 auto;
+  font-size:2vw;
+}
 #options
 {
     float:left;
-    height:400px;
     width:20%;
     padding:0 10px;
+    position: relative;
     background-color: #f6fafe;
 }
 
 .OptionsLabel
 {
   color:#0D67BD;
+  display:flex;
 }
-#policy,#ppe
+span.label
 {
-  padding:25 0px;
+  margin: auto 0px;
+  color:#0D67BD;
+}
+#ppe
+{
+  bottom: 0;
 }
 
-#statistics
+#midRow
 {
-  float:left;
-  height:400px;
-  width:20%;
-  padding:0 10px;
+  display: flex;
+  width:85%;
+  margin: auto;
+  height: 10vw;
+}
+
+#graphDiv
+{
+  padding-top: 2vh;
+  width:60%;
+  position: relative;
 }
 
 #ball-simulation0
 {
   float: left;
-  padding: 0px 25px 25px;
-  width:40vw;
-  height:25vw;
+  padding: 0px 2vw 0px;
+  width:50vw;
 }
 
 label
 {
   color: #7F7F7F;
   text-align: left;
-  font-size: 1em !important;
+  font-size: 1vw !important;
 }
 
 #defaultCanvas1
@@ -54,8 +72,16 @@ label
 
 .container
 {
+  margin:0px auto;
   width:80%;
-  margin: 0 auto;
+  height: 45vw;
+}
+
+#statistics
+{
+  float:left;
+  width:20%;
+  position: relative;
 }
 
 #sick-stat0
@@ -77,23 +103,29 @@ label
 }
 #deathStats
 {
-  padding-top: 8vh;
+  position: absolute;
+  bottom: 0;
   color: #7F7F7F;
 }
 
 #dead-stat0
 {
-  font-size: 2em;
+  font-size: 2vw;
 }
 #ball-graph0
 {
-  width: 100%;
   padding-bottom: 6vh;
+  float: left;
 }
 
-#ball-graph0>h2
+h2
 {
-  display: inline-block;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:.5vh;
+  margin-bottom:.1vh;
+  width:50vw;
 }
 
 #defaultCanvas0
@@ -101,13 +133,26 @@ label
   display: flex;
   margin-left: auto;
   margin-right: auto;
+  width:50vw;
+}
+
+.icon{
+  padding-right:3px; padding-top: 3px; display:inline-block;
+}
+
+.imgicon
+{
+  height:3vw;
+  width:3vw;
 }
 
 #bottomBar
 {
   width:100%;
   display:flex;
+  height:auto;
   background-color: #F4F4F4;
+  overflow: hidden;
 }
 table{
     table-layout: fixed;
@@ -130,14 +175,40 @@ text-align: center;
 #legend
 {
   display: inline-block;
-  margin:auto;
+  margin: 0 auto;
 }
 
 #topRow
 {
   display: flex;
-  width:85%;
+  width:80%;
   margin: auto;
+  height: 27vw;
+}
+
+#RestartButtonLabel
+{
+  position:relative;
+  top:-9vw;
+  left:3.85vw;
+  color: #FFFFFF;
+  pointer-events: none;
+}
+
+#restart-button0
+{
+  width:20vw;
+  height:14.5vw;
+  outline: none;
+  position: relative;
+  margin-top: -1vw;
+  margin-left: -.5vw;
+}
+
+#buttonDiv
+{
+  position:flex;
+  width:15vw;
 }
 
 /* The container */

@@ -12,10 +12,13 @@
 </head>
 
 <body>
+  <h1>Transmission Simulator</h1>
   <div class="container">
-    <h1>Transmission Simulator</h1>
+
     <div id="topRow">
+
       <div id="options">
+
         <div id="policy">
           <span class="OptionsLabel">Quarantine policy</span>
           <table class='parameters'>
@@ -38,7 +41,7 @@
         </div>
 
         <div id="ppe">
-          <span class="OptionsLabel">PPE Level</span>
+          <span class="OptionsLabel"><span class = "icon"><img class = "imgicon" src="images/Lungs.png"></span><span class = "label">Respiratory Protection</span></span>
           <table class='parameters'>
             <tr>
               <td>
@@ -62,35 +65,49 @@
             </tr>
           </table>
         </div>
-        <input id='restart-button0' type='submit' value='Restart'/>
+
       </div>
 
+      <div id="ball-simulation0"></div>
 
-    <div id="ball-simulation0">
+      <div id = "statistics">
+
+        <div id="topStats">
+          <div id="sickStat">
+            <span id="sick-stat0">0%</span>
+            <br>Positive Patients & Providers
+          </div>
+
+          <div id="immuneStat">
+            <span id="immune-stat0">0%</span>
+            <br>Immunity
+          </div>
+        </div>
+
+        <div id="deathStats">
+          Death Toll:
+          <br>
+          <span id="dead-stat0"></span>
+        </div>
+
+      </div>
     </div>
 
-
-    <div id = "statistics">
-      <div id="topStats">
-        <div id="sickStat">
-          <span id="sick-stat0">0%</span>
-          <br>Positive Patients
-        </div>
-        <div id="immuneStat">
-          <span id="immune-stat0">0%</span>
-          <br>Immunity
-        </div>
+    <div id="midRow">
+      <div id="buttonDiv">
+          <input id='restart-button0' type='image' src='images/Button_0.png' value='Restart'/>
+          <label id="RestartButtonLabel" for="restart-button0">START</label>
       </div>
-      <div id="deathStats">
-        Death Toll:
-        <br>
-        <span id="dead-stat0"></span>
+
+      <div id='graphDiv'>
+        <h2>Infection over time</h2>
+        <div id="ball-graph0"></div>
       </div>
     </div>
+
   </div>
-    </div>
 
-  <div id="ball-graph0"><h2>Infection over time</h2></div>
+
 
   <div id="bottomBar">
     <div id="legend">
