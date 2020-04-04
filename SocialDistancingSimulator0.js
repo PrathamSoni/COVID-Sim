@@ -32,7 +32,6 @@ let sickTimeSlider = undefined ;
 let restartButton = undefined ;
 
 /* ball status */
-let QUARANTINE=-3;
 let DEAD = -2;
 let HEALTHY = -1;
 let IMMUNE = 0;
@@ -123,8 +122,18 @@ function Ball(x, y, direction, id, model, role) {
     this.step = function() {
         if (this.isSick()) {
             this.status--;
-            if (this.status == 0) {
+            if(quarantine=="leave"&&this.role=="Doctor"){
+              let dx=arenaWidth/2-this.x;
+              let dy=arenaHeight/2-this.y;
+              let baseangle=Math.atan(dy/dx);
+              if(dx<0){this.direction=baseangle+Math.PI;}
+              else{this.direction=baseangle;}}
+            }
+              if (this.status == 0) {
                 this.status = (this.model.mortality < Math.random()) ? IMMUNE : DEAD;
+                if(quarantine=="leave"&&this.role=="Doctor"){
+                  this.direction=Math.random()*Math.PI;
+                }
             }
         }
         if (!this.stationary && !this.isDead()) {
@@ -144,7 +153,6 @@ function Ball(x, y, direction, id, model, role) {
                   this.direction=-this.direction+Math.PI;
                   this.x+=2;
                   }
-
                 //left
                   if(this.x<arenaWidth/2-15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
                     this.direction=-this.direction+Math.PI;
@@ -170,14 +178,14 @@ function Ball(x, y, direction, id, model, role) {
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
-              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/2 + arenaWidth) % arenaWidth ;
-              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/2 + arenaHeight) % arenaHeight ;
+              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/3 + arenaWidth) % arenaWidth ;
+              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/3 + arenaHeight) % arenaHeight ;
             }
 
           else{
             this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
             this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;}
-        }
+
     }
 
     this.collide = function () {
