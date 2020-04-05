@@ -62,6 +62,7 @@ function Ball(x, y, direction, id, model, role) {
     this.isDead = function () { return (this.status == DEAD); };
     this.isSick = function () { return (this.status > 0) ; };
     this.deadTime=0;
+    this.source="";
     if(this.role=="Normal"&&.8>Math.random()&&id!=0){
       this.stationary=true;
     }
@@ -86,6 +87,7 @@ function Ball(x, y, direction, id, model, role) {
     this.makeSick=function(){
       let random=Math.random();
       if(this.role=="Doctor"){
+        this.source="doctor";
         if(ppe=="n95"){
           if(random<.05){
             this.status = this.model.sickTime;
@@ -210,8 +212,8 @@ function Ball(x, y, direction, id, model, role) {
                 let s = this.status;
                 this.direction = Math.random() * 2 * Math.PI;
                 others[i].direction = Math.random() * 2 * Math.PI;
-                this.contactWith(others[i].status);
-                others[i].contactWith(s);
+                this.contactWith(others[i].status,others[i].role);
+                others[i].contactWith(s,this.role);
 
             }
         }
@@ -277,7 +279,8 @@ function Model() {
           this.balls.push(new Ball(Math.random()*30 +arenaWidth/2-15, Math.random() * 30+arenaHeight/2-15, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
         }
         /* Make one of them sick */
-        this.balls[0].contactWith(this.sickTime);
+        this.balls[0].contactWith(this.sickTime,this.role);
+        this.balls[0].source="community";
     }
 
     this.refreshParameters = function () {
@@ -457,7 +460,7 @@ arena = new p5(
 
                 arena.rect(arenaWidth/2-15, arenaHeight/2-60, 30, 120);
                 arena.rect(arenaWidth/2-55, arenaHeight/2-15, 110, 30);
-                arena.fill("#BAD7F0");
+                //arena.fill("#BAD7F0");
                 if(quarantine=="leave"){
                   arena.strokeWeight(2);
                   arena.stroke(0);
