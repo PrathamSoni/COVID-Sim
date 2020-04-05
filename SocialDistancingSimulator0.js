@@ -211,8 +211,9 @@ function Ball(x, y, direction, id, model, role) {
 
     this.display = function () {
         arena.fill(this.statusColor());
-        if(model.isFinished()&&this.isDead){
+        if(model.currentTime==model.maxTime-2&&this.isDead()){
           this.diameter=2*this.diameter;
+          console.log("hi");
         }
         if(this.role=="Normal"){
           arena.ellipse(this.x, this.y, this.diameter, this.diameter);
@@ -238,14 +239,15 @@ function Model() {
         this.maxTime = graphWidth; /* maximum time of simulation */
         this.mortality = mortality; /* how likely an infected ball dies */
         this.population = 500; /* initial population */
-
+        this.doctorPopulation=15;
         /* statistics */
         this.currentTime = 0;
         this.completionTime = 0;
         this.healthyStat = [this.population-1];
         this.immuneStat = [0];
         this.sickStat = [1];
-        this.deadStat = [0];
+        this.deadPatientStat = [0];
+        this.deadDoctorStat=[0];
 
         /* initialize the balls */
         this.balls = [];
@@ -259,7 +261,7 @@ function Model() {
             }
             this.balls.push(new Ball(x,y, Math.random() * 2 * Math.PI, i, this, "Normal"));
         }
-        for(let i=0; i<30; i++){
+        for(let i=0; i<this.doctorPopulation; i++){
           this.balls.push(new Ball(Math.random()*30 +arenaWidth/2-15, Math.random() * 30+arenaHeight/2-15, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
         }
         /* Make one of them sick */
@@ -302,18 +304,24 @@ function Model() {
         /* update statistics */
         let im = 0;
         let si = 0;
-        let de = 0;
+        let dp = 0;
+        let dd=0;
         let he = 0;
-        //restrict ball population to first 500
-        for (let b of this.balls.slice(0,this.population)) {
+        let dt=0;
+
+        for (let b of this.balls) {
             if (b.isImmune()) { im++;si++; }
-            else if (b.isDead()) { si++; de++; }
+            else if (b.isDead()) { si++;
+              if(b.role=="Doctor"){dd++}
+              else{dp++}}
             else if (b.isSick()) { si++; }
             else { he++; }
         }
+
         this.immuneStat.push(im);
         this.sickStat.push(si);
-        this.deadStat.push(de);
+        this.deadPatientStat.push(dp);
+        this.deadDoctorStat.push(dd);
         this.healthyStat.push(he);
         if (si > 0) { this.completionTime++; }
         this.currentTime++;
@@ -335,14 +343,16 @@ function Model() {
 
         /* numbers */
         let indentText = graphWidth / 8 ;
-        let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/this.population) ;
-        let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/this.population) ;
-        let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/this.population) ;
-        let de = this.deadStat[this.deadStat.length-1];
+        let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/(this.population+this.doctorPopulation)) ;
+        let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/(this.population+this.doctorPopulation)) ;
+        let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/(this.population+this.doctorPopulation)) ;
+        let dp = this.deadPatientStat[this.deadPatientStat.length-1];
+        let dd =this.deadDoctorStat[this.deadDoctorStat.length-1];
         //document.getElementById('healthy-stat0').innerHTML = he;
         document.getElementById('immune-stat0').innerHTML = im + "%";
         document.getElementById('sick-stat0').innerHTML = si + "%";
-        document.getElementById('dead-stat0').innerHTML = de;
+        document.getElementById('patient-deaths').innerHTML = dp;
+        document.getElementById('doctor-deaths').innerHTML = dd;
         //document.getElementById('current-time0').innerHTML = (this.completionTime / FRAME_RATE).toFixed(1);
 
         /* the bars */
@@ -363,7 +373,7 @@ function Model() {
         /* sick balls */
         graph.fill(SICK_COLOR);
         graph.beginShape();
-        for (let t = 0; t < this.deadStat.length; t++) {
+        for (let t = 0; t < this.deadPatientStat.length; t++) {
             graph.vertex(x0 + t * dx, y1);
         }
         for (let t = this.sickStat.length; t >= 0; t--) {
