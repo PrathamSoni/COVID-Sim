@@ -66,45 +66,50 @@ function Ball(x, y, direction, id, model, role) {
     if(this.role=="Normal"&&.8>Math.random()&&id!=0){
       this.stationary=true;
     }
-    /* interact with a ball whose status is s and whose role is r. */
-    this.contactWith = function (s,r) {
+    /* interact with a ball whose status is s and whose role is r and whose source is t. */
+    this.contactWith = function (s,r,t) {
         if (this.isHealthy() && (s > 0)) {
           if(r=="Doctor"){
             let random=Math.random();
             if(ppe=="n95"){
-              if(random<.05){this.makeSick();}
+              if(random<.05){this.makeSick(t);}
             }
             if(ppe=="mask"){
-              if(random<.5){this.makeSick();}
+              if(random<.5){this.makeSick(t);}
             }
-            if(ppe=="none"){this.makeSick();}
+            if(ppe=="none"){this.makeSick(t);}
           }
 
-          else{this.makeSick();}
+          else{this.makeSick(t);}
 
         }
     }
-    this.makeSick=function(){
+    this.makeSick=function(t){
       let random=Math.random();
       if(this.role=="Doctor"){
         this.source="doctor";
         if(ppe=="n95"){
           if(random<.05){
             this.status = this.model.sickTime;
+            this.source="doctor";
           }
 
         }
         if(ppe=="mask"){
           if(random<.5){
             this.status = this.model.sickTime;
+            this.source="doctor";
+
           }
         }
         if(ppe=="none"){
         this.status = this.model.sickTime;
+        this.source="doctor";
         }
       }
       else{
         this.status = this.model.sickTime;
+        this.source=t;
         if(Math.random()>.8){
         this.stationary=false;
         /*calculate initial direction towards hospital*/
@@ -212,8 +217,8 @@ function Ball(x, y, direction, id, model, role) {
                 let s = this.status;
                 this.direction = Math.random() * 2 * Math.PI;
                 others[i].direction = Math.random() * 2 * Math.PI;
-                this.contactWith(others[i].status,others[i].role);
-                others[i].contactWith(s,this.role);
+                this.contactWith(others[i].status,others[i].role,others[i].source);
+                others[i].contactWith(s,this.role,this.source);
 
             }
         }
@@ -262,7 +267,8 @@ function Model() {
         this.sickStat = [1];
         this.deadPatientStat = [0];
         this.deadDoctorStat=[0];
-
+        this.communitySourceStat=[1];
+        this.doctorSourceStat=[0];
         /* initialize the balls */
         this.balls = [];
         for (let i = 0; i < this.population; i++) {
@@ -323,6 +329,8 @@ function Model() {
         let dd=0;
         let he = 0;
         let dt=0;
+        let co=0;
+        let doc=0;
 
         for (let b of this.balls) {
             if (b.isImmune()) { im++;si++; }
@@ -331,6 +339,9 @@ function Model() {
               else{dp++}}
             else if (b.isSick()) { si++; }
             else { he++; }
+
+            if(b.source=="community"){co++;}
+            if(b.source=="doctor"){doc++;}
         }
 
         this.immuneStat.push(im);
@@ -338,6 +349,8 @@ function Model() {
         this.deadPatientStat.push(dp);
         this.deadDoctorStat.push(dd);
         this.healthyStat.push(he);
+        this.communitySourceStat.push(co);
+        this.doctorSourceStat.push(doc);
         if (si > 0) { this.completionTime++; }
         this.currentTime++;
 
@@ -358,13 +371,15 @@ function Model() {
 
         /* numbers */
         let indentText = graphWidth / 8 ;
-        let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/(this.population+this.doctorPopulation)) ;
-        let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/(this.population+this.doctorPopulation)) ;
+        //let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/(this.population+this.doctorPopulation)) ;
+        //let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/(this.population+this.doctorPopulation)) ;
         let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/(this.population+this.doctorPopulation)) ;
         let dp = this.deadPatientStat[this.deadPatientStat.length-1];
         let dd =this.deadDoctorStat[this.deadDoctorStat.length-1];
+        let co=this.communitySourceStat[this.communitySourceStat.length-1];
+        let doc=this.doctorSourceStat[this.doctorSourceStat.length-1];
         //document.getElementById('healthy-stat0').innerHTML = he;
-        document.getElementById('immune-stat0').innerHTML = im + "%";
+        document.getElementById('provider-percentage').innerHTML = Math.round(doc/(doc+co)*100) + "%";
         document.getElementById('sick-stat0').innerHTML = si + "%";
         document.getElementById('patient-deaths').innerHTML = dp;
         document.getElementById('doctor-deaths').innerHTML = dd;
