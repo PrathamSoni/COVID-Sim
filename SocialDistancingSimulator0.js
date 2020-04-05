@@ -61,6 +61,7 @@ function Ball(x, y, direction, id, model, role) {
     this.isImmune = function () { return (this.status == IMMUNE); };
     this.isDead = function () { return (this.status == DEAD); };
     this.isSick = function () { return (this.status > 0) ; };
+    this.deadTime=0;
     if(this.role=="Normal"&&.8>Math.random()&&id!=0){
       this.stationary=true;
     }
@@ -131,12 +132,19 @@ function Ball(x, y, direction, id, model, role) {
             }
             if (this.status == 0) {
                 this.status = (this.model.mortality < Math.random()) ? IMMUNE : DEAD;
+                if(this.isDead()){
+                  this.deadTime=17;
+                }
                 if(this.role=="Doctor"&&quarantine=="leave"){
                   this.direction=Math.random()*2*Math.PI;
                 }
             }
-
-
+        }
+        if (this.isDead()&&this.deadTime!=0){
+          this.deadTime--;
+          if(model.currentTime==model.maxTime-2){
+            this.deadtime=0;
+          }
         }
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
@@ -210,18 +218,22 @@ function Ball(x, y, direction, id, model, role) {
     }
 
     this.display = function () {
+      let diameter=this.diameter;
+        if(this.isDead()){
+
+          diameter=(-.25*Math.abs(this.deadTime-8)+3)*this.diameter;
+        }
         arena.fill(this.statusColor());
         if(model.currentTime==model.maxTime-2&&this.isDead()){
-          this.diameter=2*this.diameter;
-          console.log("hi");
+          diameter=2*this.diameter;
         }
         if(this.role=="Normal"){
-          arena.ellipse(this.x, this.y, this.diameter, this.diameter);
+          arena.ellipse(this.x, this.y, diameter, diameter);
       }
         else{
 
-          arena.rect(this.x-this.diameter/6, this.y-this.diameter/2, this.diameter/3, this.diameter);
-          arena.rect(this.x-this.diameter/2, this.y-this.diameter/6, this.diameter, this.diameter/3);
+          arena.rect(this.x-diameter/6, this.y-diameter/2, diameter/3, diameter);
+          arena.rect(this.x-diameter/2, this.y-diameter/6, diameter, diameter/3);
 
         }
 
