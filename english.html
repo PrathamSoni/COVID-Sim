@@ -111,6 +111,7 @@
     </div>
 
     <div id="midRow">
+
       <div id="buttonDiv">
           <input id='restart-button0' type='image' src='images/Button_1.png' value='Restart'/>
           <label id="RestartButtonLabel" for="restart-button0">RESET</label>
@@ -120,39 +121,43 @@
         <h2>Transmission over time</h2>
         <div id="ball-graph0"></div>
       </div>
+
     </div>
 
   </div>
 
-
-
   <div id="bottomBar">
+
     <div id="legend">
       <table cellpadding="5">
         <tr>
-          <th>Healthy</th>
-          <td><span class="HealtyCivilian">H</span></td>
-          <td><span class="HealtyProvider">H</span></td>
+          <th class="sideHeader">Healthy</th>
+          <td><span class="dot HealthyCivilian"></span></td>
+          <td><span class="HealthyProvider"><img class="HealthyProvider" src="images/HealthyProvider.png"></span></td>
+          <td rowspan="3"><span class="QuarantineIcon"></span></td>
+          <td rowspan="3"><span class="HospitalIcon"><img class="HospitalIcon" src="images/Hospital.png"></span></td>
         </tr>
         <tr>
-          <th>COVID +</th>
-          <td><span class="InfectedCivilian">H</span></td>
-          <td><span class="InfectedProvider">H</span></td>
+          <th class="sideHeader">COVID +</th>
+          <td><span class="dot InfectedCivilian"></span></td>
+          <td><span class="InfectedProvider"><img class="InfectedProvider" src="images/SickProvider.png"></span></td>
         </tr>
         <tr>
-          <th>Deceased</th>
-          <td><span class="DeceasedCivilian">H</span></td>
-          <td><span class="DeceasedProvider">H</span></td>
+          <th class="sideHeader">Deceased</th>
+          <td><span class="dot DeceasedCivilian"></span></td>
+          <td><span class="DeceasedProvider"><img class="DeceasedProvider" src="images/DeceasedProvider.svg"></span></td>
         </tr>
         <tr>
           <td></td>
-          <th>Community<br>Member</th>
-          <th>Provider</th>
+          <th class="bottomHeader">Community<br>Member</th>
+          <th class="bottomHeader">Provider</th>
+          <th class="bottomHeader">Quarantine</th>
+          <th class="bottomHeader">Hospital</th>
         </tr>
       </table>
     </div>
-  </div>
 
+  </div>
 
 
 </body>
