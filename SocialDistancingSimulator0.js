@@ -122,19 +122,21 @@ function Ball(x, y, direction, id, model, role) {
     this.step = function() {
         if (this.isSick()) {
             this.status--;
-            if(quarantine=="leave"&&this.role=="Doctor"){
+            if(this.role=="Doctor"&&quarantine=="leave"){
               let dx=arenaWidth/2-this.x;
               let dy=arenaHeight/2-this.y;
               let baseangle=Math.atan(dy/dx);
               if(dx<0){this.direction=baseangle+Math.PI;}
-              else{this.direction=baseangle;}}
+              else{this.direction=baseangle;}
             }
-              if (this.status == 0) {
+            if (this.status == 0) {
                 this.status = (this.model.mortality < Math.random()) ? IMMUNE : DEAD;
-                if(quarantine=="leave"&&this.role=="Doctor"){
-                  this.direction=Math.random()*Math.PI;
+                if(this.role=="Doctor"&&quarantine=="leave"){
+                  this.direction=Math.random()*2*Math.PI;
                 }
             }
+
+
         }
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
@@ -178,14 +180,14 @@ function Ball(x, y, direction, id, model, role) {
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
-              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/3 + arenaWidth) % arenaWidth ;
-              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/3 + arenaHeight) % arenaHeight ;
+              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/2 + arenaWidth) % arenaWidth ;
+              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/2 + arenaHeight) % arenaHeight ;
             }
 
           else{
             this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
             this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;}
-
+        }
     }
 
     this.collide = function () {
@@ -410,7 +412,7 @@ arena = new p5(
             sickTimeSlider = arena.select('#sick-time-slider0');
             restartButton = arena.select('#restart-button0');
             restartButton.mousePressed(() => { model.restart ();
-            model.refreshParameters(); document.getElementById("restart-button0").setAttribute("src", "images/Button_1.png");document.getElementById("RestartButtonLabel").innerHTML = "RESET";});
+            model.refreshParameters();});
 
             arena.frameRate(FRAME_RATE);
             arena.ellipseMode(arena.CENTER);
@@ -419,8 +421,6 @@ arena = new p5(
 
         arena.draw = () => {
             if (model.isFinished()) {
-              document.getElementById("restart-button0").setAttribute("src", "images/Button_0.png");
-              document.getElementById("RestartButtonLabel").innerHTML = "START";
             }
             else {
                 //model.refreshParameters();
