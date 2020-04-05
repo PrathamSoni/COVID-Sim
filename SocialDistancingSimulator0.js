@@ -8,10 +8,10 @@
 */
 
 /* Colors of sick, healthy, immune and dead balls. */
-const SICK_COLOR = "#A83535";
-const HEALTHY_COLOR = "#A6A6A6";
+const SICK_COLOR = "#B11C1C";
+const HEALTHY_COLOR = "#8B8B8B";
 const IMMUNE_COLOR = "#A83535";
-const DEAD_COLOR = "#F7A9A9";
+const DEAD_COLOR = "#F8B2B2";
 
 const FRAME_RATE = 30;
 
@@ -464,13 +464,13 @@ arena = new p5(
             }
             else {
                 //model.refreshParameters();
-                arena.background("#E7E7E7");
+                arena.background("#F0F0F0");
 
 
                 /* arena */
                 arena.noStroke();
 
-                arena.fill("#ADD8E6");
+                arena.fill("#C0DBF2");
                 //arena.rect(arenaWidth/2-75, arenaHeight/2-75, 150, 150,5,5,5,5)
 
                 arena.rect(arenaWidth/2-15, arenaHeight/2-60, 30, 120);
