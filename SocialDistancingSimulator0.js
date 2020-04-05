@@ -32,7 +32,6 @@ let sickTimeSlider = undefined ;
 let restartButton = undefined ;
 
 /* ball status */
-let QUARANTINE=-3;
 let DEAD = -2;
 let HEALTHY = -1;
 let IMMUNE = 0;
@@ -62,6 +61,8 @@ function Ball(x, y, direction, id, model, role) {
     this.isImmune = function () { return (this.status == IMMUNE); };
     this.isDead = function () { return (this.status == DEAD); };
     this.isSick = function () { return (this.status > 0) ; };
+    this.deadTime=0;
+    this.source="";
     if(this.role=="Normal"&&.8>Math.random()&&id!=0){
       this.stationary=true;
     }
@@ -86,6 +87,7 @@ function Ball(x, y, direction, id, model, role) {
     this.makeSick=function(){
       let random=Math.random();
       if(this.role=="Doctor"){
+        this.source="doctor";
         if(ppe=="n95"){
           if(random<.05){
             this.status = this.model.sickTime;
@@ -123,9 +125,28 @@ function Ball(x, y, direction, id, model, role) {
     this.step = function() {
         if (this.isSick()) {
             this.status--;
+            if(this.role=="Doctor"&&quarantine=="leave"){
+              let dx=arenaWidth/2-this.x;
+              let dy=arenaHeight/2-this.y;
+              let baseangle=Math.atan(dy/dx);
+              if(dx<0){this.direction=baseangle+Math.PI;}
+              else{this.direction=baseangle;}
+            }
             if (this.status == 0) {
                 this.status = (this.model.mortality < Math.random()) ? IMMUNE : DEAD;
+                if(this.isDead()){
+                  this.deadTime=17;
+                }
+                if(this.role=="Doctor"&&quarantine=="leave"){
+                  this.direction=Math.random()*2*Math.PI;
+                }
             }
+        }
+        if (this.isDead()&&this.deadTime!=0){
+          this.deadTime--;
+          if(model.currentTime==model.maxTime-2){
+            this.deadtime=0;
+          }
         }
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
@@ -144,7 +165,6 @@ function Ball(x, y, direction, id, model, role) {
                   this.direction=-this.direction+Math.PI;
                   this.x+=2;
                   }
-
                 //left
                   if(this.x<arenaWidth/2-15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
                     this.direction=-this.direction+Math.PI;
@@ -192,25 +212,30 @@ function Ball(x, y, direction, id, model, role) {
                 let s = this.status;
                 this.direction = Math.random() * 2 * Math.PI;
                 others[i].direction = Math.random() * 2 * Math.PI;
-                this.contactWith(others[i].status);
-                others[i].contactWith(s);
+                this.contactWith(others[i].status,others[i].role);
+                others[i].contactWith(s,this.role);
 
             }
         }
     }
 
     this.display = function () {
+      let diameter=this.diameter;
+        if(this.isDead()){
+
+          diameter=(-.25*Math.abs(this.deadTime-8)+3)*this.diameter;
+        }
         arena.fill(this.statusColor());
-        if(model.isFinished()&&this.isDead){
-          this.diameter=2*this.diameter;
+        if(model.currentTime==model.maxTime-2&&this.isDead()){
+          diameter=2*this.diameter;
         }
         if(this.role=="Normal"){
-          arena.ellipse(this.x, this.y, this.diameter, this.diameter);
+          arena.ellipse(this.x, this.y, diameter, diameter);
       }
         else{
 
-          arena.rect(this.x-this.diameter/6, this.y-this.diameter/2, this.diameter/3, this.diameter);
-          arena.rect(this.x-this.diameter/2, this.y-this.diameter/6, this.diameter, this.diameter/3);
+          arena.rect(this.x-diameter/6, this.y-diameter/2, diameter/3, diameter);
+          arena.rect(this.x-diameter/2, this.y-diameter/6, diameter, diameter/3);
 
         }
 
@@ -228,14 +253,15 @@ function Model() {
         this.maxTime = graphWidth; /* maximum time of simulation */
         this.mortality = mortality; /* how likely an infected ball dies */
         this.population = 500; /* initial population */
-
+        this.doctorPopulation=15;
         /* statistics */
         this.currentTime = 0;
         this.completionTime = 0;
         this.healthyStat = [this.population-1];
         this.immuneStat = [0];
         this.sickStat = [1];
-        this.deadStat = [0];
+        this.deadPatientStat = [0];
+        this.deadDoctorStat=[0];
 
         /* initialize the balls */
         this.balls = [];
@@ -249,11 +275,12 @@ function Model() {
             }
             this.balls.push(new Ball(x,y, Math.random() * 2 * Math.PI, i, this, "Normal"));
         }
-        for(let i=0; i<30; i++){
+        for(let i=0; i<this.doctorPopulation; i++){
           this.balls.push(new Ball(Math.random()*30 +arenaWidth/2-15, Math.random() * 30+arenaHeight/2-15, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
         }
         /* Make one of them sick */
-        this.balls[0].contactWith(this.sickTime);
+        this.balls[0].contactWith(this.sickTime,this.role);
+        this.balls[0].source="community";
     }
 
     this.refreshParameters = function () {
@@ -292,18 +319,24 @@ function Model() {
         /* update statistics */
         let im = 0;
         let si = 0;
-        let de = 0;
+        let dp = 0;
+        let dd=0;
         let he = 0;
-        //restrict ball population to first 500
-        for (let b of this.balls.slice(0,this.population)) {
+        let dt=0;
+
+        for (let b of this.balls) {
             if (b.isImmune()) { im++;si++; }
-            else if (b.isDead()) { si++; de++; }
+            else if (b.isDead()) { si++;
+              if(b.role=="Doctor"){dd++}
+              else{dp++}}
             else if (b.isSick()) { si++; }
             else { he++; }
         }
+
         this.immuneStat.push(im);
         this.sickStat.push(si);
-        this.deadStat.push(de);
+        this.deadPatientStat.push(dp);
+        this.deadDoctorStat.push(dd);
         this.healthyStat.push(he);
         if (si > 0) { this.completionTime++; }
         this.currentTime++;
@@ -325,14 +358,16 @@ function Model() {
 
         /* numbers */
         let indentText = graphWidth / 8 ;
-        let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/this.population) ;
-        let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/this.population) ;
-        let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/this.population) ;
-        let de = this.deadStat[this.deadStat.length-1];
+        let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/(this.population+this.doctorPopulation)) ;
+        let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/(this.population+this.doctorPopulation)) ;
+        let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/(this.population+this.doctorPopulation)) ;
+        let dp = this.deadPatientStat[this.deadPatientStat.length-1];
+        let dd =this.deadDoctorStat[this.deadDoctorStat.length-1];
         //document.getElementById('healthy-stat0').innerHTML = he;
         document.getElementById('immune-stat0').innerHTML = im + "%";
         document.getElementById('sick-stat0').innerHTML = si + "%";
-        document.getElementById('dead-stat0').innerHTML = de;
+        document.getElementById('patient-deaths').innerHTML = dp;
+        document.getElementById('doctor-deaths').innerHTML = dd;
         //document.getElementById('current-time0').innerHTML = (this.completionTime / FRAME_RATE).toFixed(1);
 
         /* the bars */
@@ -353,7 +388,7 @@ function Model() {
         /* sick balls */
         graph.fill(SICK_COLOR);
         graph.beginShape();
-        for (let t = 0; t < this.deadStat.length; t++) {
+        for (let t = 0; t < this.deadPatientStat.length; t++) {
             graph.vertex(x0 + t * dx, y1);
         }
         for (let t = this.sickStat.length; t >= 0; t--) {
@@ -402,7 +437,7 @@ arena = new p5(
             sickTimeSlider = arena.select('#sick-time-slider0');
             restartButton = arena.select('#restart-button0');
             restartButton.mousePressed(() => { model.restart ();
-            model.refreshParameters(); document.getElementById("restart-button0").setAttribute("src", "images/Button_1.png");document.getElementById("RestartButtonLabel").innerHTML = "RESET";});
+            model.refreshParameters();});
 
             arena.frameRate(FRAME_RATE);
             arena.ellipseMode(arena.CENTER);
@@ -411,8 +446,6 @@ arena = new p5(
 
         arena.draw = () => {
             if (model.isFinished()) {
-              document.getElementById("restart-button0").setAttribute("src", "images/Button_0.png");
-              document.getElementById("RestartButtonLabel").innerHTML = "START";
             }
             else {
                 //model.refreshParameters();
@@ -427,7 +460,7 @@ arena = new p5(
 
                 arena.rect(arenaWidth/2-15, arenaHeight/2-60, 30, 120);
                 arena.rect(arenaWidth/2-55, arenaHeight/2-15, 110, 30);
-                arena.fill("#BAD7F0");
+                //arena.fill("#BAD7F0");
                 if(quarantine=="leave"){
                   arena.strokeWeight(2);
                   arena.stroke(0);
