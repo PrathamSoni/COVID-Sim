@@ -87,7 +87,6 @@ function Ball(x, y, direction, id, model, role) {
     this.makeSick=function(t){
       let random=Math.random();
       if(this.role=="Doctor"){
-        this.source="doctor";
         if(ppe=="n95"){
           if(random<.05){
             this.status = this.model.sickTime;
@@ -156,45 +155,46 @@ function Ball(x, y, direction, id, model, role) {
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
               //bounce far right
-              if(this.x>arenaWidth/2+50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+              if(this.x>arenaWidth/2+45&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
                 this.direction=-this.direction+Math.PI;
                 this.x-=2;
                 }
               //right
-                if(this.x>arenaWidth/2+15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
+                if(this.x>arenaWidth/2+10&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
                   this.direction=-this.direction+Math.PI;
                   this.x-=2;
                   }
                 //far left
-                if(this.x<arenaWidth/2-50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+                if(this.x<arenaWidth/2-45&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
                   this.direction=-this.direction+Math.PI;
                   this.x+=2;
                   }
                 //left
-                  if(this.x<arenaWidth/2-15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
+                  if(this.x<arenaWidth/2-10&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
                     this.direction=-this.direction+Math.PI;
                     this.x+=2;
                     }
               //far bottom
-              if(this.y<arenaHeight/2-55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+              if(this.y<arenaHeight/2-50&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
                 this.direction=-1*this.direction;
                 this.y+=2;
               }
               //bottom
-              if(this.y<arenaHeight/2-15&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+              if(this.y<arenaHeight/2-10&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
                 this.direction=-1*this.direction;
                 this.y+=2;
               }
               //far top
-              if(this.y>arenaHeight/2+55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+              if(this.y>arenaHeight/2+50&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
               //top
-              if(this.y>arenaHeight/2+15&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+              if(this.y>arenaHeight/2+10&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
+
               this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
               this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;
             }
@@ -206,7 +206,7 @@ function Ball(x, y, direction, id, model, role) {
               this.x+=2;
               }
             //right
-              if(this.x<arenaWidth/2+10&&this.x>arenaWidth/2&&(this.y>arenaHeight/2+10||this.y<arenaHeight/2-10)){
+              if(this.x<arenaWidth/2+10&&this.x>arenaWidth/2&&((this.y>arenaHeight/2+10&&this.y<arenaHeight/2+50)||(this.y<arenaHeight/2-10&&this.y>arenaHeight/2-50))){
                 this.direction=-this.direction+Math.PI;
                 this.x+=2;
                 }
@@ -216,7 +216,7 @@ function Ball(x, y, direction, id, model, role) {
                 this.x-=2;
                 }
               //left
-                if(this.x>arenaWidth/2-10&&this.x<arenaWidth/2&&(this.y>arenaHeight/2+10||this.y<arenaHeight/2-10)){
+                if(this.x>arenaWidth/2-10&&this.x<arenaWidth/2&&((this.y>arenaHeight/2+10&&this.y<arenaHeight/2+50)||(this.y<arenaHeight/2-10&&this.y>arenaHeight/2-50))){
                   this.direction=-this.direction+Math.PI;
                   this.x-=2;
                   }
@@ -226,7 +226,7 @@ function Ball(x, y, direction, id, model, role) {
               this.y-=2;
             }
             //bottom
-            if(this.y>arenaHeight/2-10&&this.y<arenaHeight/2&&(this.x<arenaWidth/2-10||this.x>arenaWidth/2+10)){
+            if(this.y>arenaHeight/2-10&&this.y<arenaHeight/2&&((this.x<arenaWidth/2-10&&this.x>arenaWidth/2-45)||(this.x>arenaWidth/2+10&&this.x<arenaWidth/2+45))){
               this.direction=-1*this.direction;
               this.y-=2;
             }
@@ -236,7 +236,7 @@ function Ball(x, y, direction, id, model, role) {
               this.y+=2;
             }
             //top
-            if(this.y<arenaHeight/2+15&&this.y>arenaHeight/2&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+            if(this.y<arenaHeight/2+10&&this.y>arenaHeight/2&&((this.x<arenaWidth/2-10&&this.x>arenaWidth/2-45)||(this.x>arenaWidth/2+10&&this.x<arenaWidth/2+45))){
               this.direction=-1*this.direction;
               this.y+=2;
             }
@@ -314,7 +314,7 @@ function Model() {
         for (let i = 0; i < this.population; i++) {
             let x=Math.random() * arenaWidth;
             let y=Math.random() * arenaHeight;
-            while(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-02&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65))){
+            while(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65))){
                x=Math.random() * arenaWidth;
                y=Math.random() * arenaWidth;
 
