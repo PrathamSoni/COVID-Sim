@@ -158,7 +158,7 @@ function Ball(x, y, direction, id, model, role) {
               //bounce far right
               if(this.x>arenaWidth/2+50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
                 this.direction=-this.direction+Math.PI;
-                this.x--;
+                this.x-=2;
                 }
               //right
                 if(this.x>arenaWidth/2+15&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
@@ -195,11 +195,51 @@ function Ball(x, y, direction, id, model, role) {
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
-              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/2 + arenaWidth) % arenaWidth ;
-              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/2 + arenaHeight) % arenaHeight ;
+              this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
+              this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;
             }
 
           else{
+            //far right
+            if(this.x<arenaWidth/2+45&&this.x>arenaWidth/2&&this.y<arenaHeight/2+10&&this.y>arenaHeight/2-10){
+              this.direction=-this.direction+Math.PI;
+              this.x+=2;
+              }
+            //right
+              if(this.x<arenaWidth/2+10&&this.x>arenaWidth/2&&(this.y>arenaHeight/2+10||this.y<arenaHeight/2-10)){
+                this.direction=-this.direction+Math.PI;
+                this.x+=2;
+                }
+              //far left
+              if(this.x>arenaWidth/2-45&&this.x<arenaWidth/2&&this.y<arenaHeight/2+10&&this.y>arenaHeight/2-10){
+                this.direction=-this.direction+Math.PI;
+                this.x-=2;
+                }
+              //left
+                if(this.x>arenaWidth/2-10&&this.x<arenaWidth/2&&(this.y>arenaHeight/2+10||this.y<arenaHeight/2-10)){
+                  this.direction=-this.direction+Math.PI;
+                  this.x-=2;
+                  }
+            //far bottom
+            if(this.y>arenaHeight/2-50&&this.y<arenaHeight/2&&this.x>arenaWidth/2-10&&this.x<arenaWidth/2+10){
+              this.direction=-1*this.direction;
+              this.y-=2;
+            }
+            //bottom
+            if(this.y>arenaHeight/2-10&&this.y<arenaHeight/2&&(this.x<arenaWidth/2-10||this.x>arenaWidth/2+10)){
+              this.direction=-1*this.direction;
+              this.y-=2;
+            }
+            //far top
+            if(this.y<arenaHeight/2+50&&this.y>arenaHeight/2&&this.x>arenaWidth/2-10&&this.x<arenaWidth/2+10){
+              this.direction=-1*this.direction;
+              this.y+=2;
+            }
+            //top
+            if(this.y<arenaHeight/2+15&&this.y>arenaHeight/2&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+              this.direction=-1*this.direction;
+              this.y+=2;
+            }
             this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
             this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;}
         }
