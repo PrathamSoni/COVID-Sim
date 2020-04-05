@@ -268,6 +268,11 @@ text-align: center;
   border-width: 2px;
 }
 
+.noHover:hover input ~ .checkmark
+{
+  border-color: #DCDCDC !important;
+}
+
 /* When the radio button is checked, add a blue background */
 .checkcontainer input:checked ~ .checkmark {
   border-radius: 50%;

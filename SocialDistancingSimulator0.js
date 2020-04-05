@@ -334,18 +334,29 @@ function Model() {
         this.mortality = .04;
         this.sickTime = 5 * FRAME_RATE/3;
         for(let i=0; i<document.getElementsByName("quarantine").length;i++){
+          document.getElementsByName("quarantine")[i].disabled = true;
           if(document.getElementsByName("quarantine")[i].checked){
             quarantine=document.getElementsByName("quarantine")[i].value;
           }
+          else {
+            document.getElementsByName("quarantine")[i].parentElement.classList.add("noHover");
+          }
         }
         for(let i=0; i<document.getElementsByName("ppe").length;i++){
+          document.getElementsByName("ppe")[i].disabled = true;
           if(document.getElementsByName("ppe")[i].checked){
             ppe=document.getElementsByName("ppe")[i].value;
+          }
+          else {
+            document.getElementsByName("ppe")[i].parentElement.classList.add("noHover");
           }
         }
     }
 
     this.restart = function () {
+      //Changes color and text of button
+      document.getElementById("restart-button0").src = "images/Button_1.png";
+      document.getElementById("RestartButtonLabel").innerHTML = "RESET";
         this.initialize(this.socialDistance, this.mortality, this.sickTime);
     }
 
@@ -501,6 +512,16 @@ arena = new p5(
 
         arena.draw = () => {
             if (model.isFinished()) {
+              document.getElementById("restart-button0").src = "images/Button_0.png";
+              document.getElementById("RestartButtonLabel").innerHTML = "START";
+              for(let i=0; i<document.getElementsByName("quarantine").length;i++){
+                document.getElementsByName("quarantine")[i].disabled = false;
+                document.getElementsByName("quarantine")[i].parentElement.classList.remove("noHover");
+              }
+              for(let i=0; i<document.getElementsByName("ppe").length;i++){
+                document.getElementsByName("ppe")[i].disabled = false;
+                document.getElementsByName("ppe")[i].parentElement.classList.remove("noHover");
+              }
             }
             else {
                 //model.refreshParameters();
