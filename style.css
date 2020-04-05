@@ -5,7 +5,10 @@
   font-weight: bold;
   color: #7F7F7F;
 }
-
+html, body {
+    max-width: 100%;
+    overflow: hidden;
+}
 h1
 {
   margin: 0 17.5vw;
@@ -49,7 +52,7 @@ span.label
 
 #graphDiv
 {
-  padding-top: 2vh;
+  padding-top: 1.1vw;
   position: relative;
   margin-left: 1.8vw;
 }
@@ -87,7 +90,7 @@ label
   padding-top: 2vw;
   margin:0px auto;
   width:80%;
-  height: 45vw;
+  padding-bottom: 5vw;
 }
 
 #statistics
@@ -191,6 +194,7 @@ text-align: center;
 {
   display: inline-block;
   margin: 0 auto;
+  padding-top: .5vw;
 }
 
 #topRow
@@ -301,4 +305,74 @@ text-align: center;
 	width: 1vw;
 	height: 1vw;
     border-radius: 50%;
+}
+
+/*Table values*/
+.dot
+{
+  height: .75vw;
+  width: .75vw;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.HealthyCivilian
+{
+  background-color: #8B8B8B;
+}
+
+.InfectedCivilian
+{
+  background-color: #B11C1C;
+}
+
+.DeceasedCivilian
+{
+  height: 1.5vw;
+  width: 1.5vw;
+  background-color: #F8B2B2;
+}
+
+.HealthyProvider
+{
+  height: .8vw;
+  width: .8vw;
+}
+
+.InfectedProvider
+{
+  height: .8vw;
+  width: .8vw;
+}
+
+.DeceasedProvider
+{
+  height: 1.5vw;
+  width: 1.5vw;
+}
+
+.HospitalIcon
+{
+  height:5vw;
+  width:5vw;
+}
+
+.QuarantineIcon
+{
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  border-width: 2px;
+  border-color: #000000 !important;
+  display: inline-block;
+  border:solid;
+}
+
+.bottomHeader
+{
+  vertical-align: text-top;
+}
+.sideHeader
+{
+  font-weight: normal;
 }
