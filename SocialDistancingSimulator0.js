@@ -63,7 +63,7 @@ function Ball(x, y, direction, id, model, role) {
     this.isSick = function () { return (this.status > 0) ; };
     this.deadTime=0;
     this.source="";
-    if(this.role=="Normal"&&.8>Math.random()&&id!=0){
+    if(this.role=="Normal"&&.75>Math.random()&&id!=0){
       this.stationary=true;
     }
     /* interact with a ball whose status is s and whose role is r and whose source is t. */
@@ -109,7 +109,7 @@ function Ball(x, y, direction, id, model, role) {
       else{
         this.status = this.model.sickTime;
         this.source=t;
-        if(Math.random()>.8){
+        if(Math.random()>.7){
         this.stationary=false;
         /*calculate initial direction towards hospital*/
         let dx=arenaWidth/2-this.x;
@@ -303,8 +303,8 @@ function Model() {
         this.sickTime = sickTime; /* how long a ball is animation frames */
         this.maxTime = graphWidth; /* maximum time of simulation */
         this.mortality = mortality; /* how likely an infected ball dies */
-        this.population = 650; /* initial population */
-        this.doctorPopulation=20;
+        this.population = 500; /* initial population */
+        this.doctorPopulation=15;
         /* statistics */
         this.currentTime = 0;
         this.completionTime = 0;
