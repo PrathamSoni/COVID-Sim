@@ -50,7 +50,7 @@ function debug(msg) {
 function Ball(x, y, direction, id, model, role) {
     this.x = x;
     this.y = y;
-    this.diameter = (arenaWidth + arenaHeight) / 200 ;
+    this.diameter = (arenaWidth + arenaHeight) / 150 ;
     this.direction = direction;
     this.stationary = false;
     this.id = id;
@@ -396,7 +396,7 @@ function Model() {
 
     /* The velocity of balls, depending on social distance. */
    this.velocity = function () {
-       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 225 ;
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 250 ;
        return velocity;
    }
 
