@@ -526,8 +526,15 @@ arena = new p5(
             mortalitySlider = arena.select('#mortality-slider0');
             sickTimeSlider = arena.select('#sick-time-slider0');
             restartButton = arena.select('#restart-button0');
-            restartButton.mousePressed(() => { model.restart ();
-            model.refreshParameters();});
+            restartButton.mousePressed(() => { if(!model.isFinished())
+              {model.currentTime = graphWidth + 40;
+                console.log(model.completionTime);
+              }
+              else {
+                model.restart ();
+              model.refreshParameters();
+              }
+              });
 
             arena.frameRate(FRAME_RATE);
             arena.ellipseMode(arena.CENTER);
