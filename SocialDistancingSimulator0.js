@@ -471,7 +471,7 @@ function Model() {
 
         /* numbers */
         let indentText = graphWidth / 8 ;
-        //let he = Math.round(100 * this.healthyStat[this.healthyStat.length-1]/(this.population+this.doctorPopulation)) ;
+        //let he = Math.round(100 * this.healthyStat[this.he  althyStat.length-1]/(this.population+this.doctorPopulation)) ;
         //let im = Math.round(100 * this.immuneStat[this.immuneStat.length-1]/(this.population+this.doctorPopulation)) ;
         let si = Math.round(100 * this.sickStat[this.sickStat.length-1]/(this.population+this.doctorPopulation)) ;
         let dp = this.deadPatientStat[this.deadPatientStat.length-1];
@@ -491,6 +491,9 @@ function Model() {
         /* healthy balls */
         graph.fill("#E7E7E7");
         graph.rect(x0, y0, x1 - x0, graphHeight);
+
+        document.getElementById('progressBar').style.width = (100-100*this.currentTime/graphWidth) +"%";
+        document.getElementById('progressBar').style.marginLeft = (100*this.currentTime/graphWidth) +"%";
         /* dead balls */
         /*graph.fill(DEAD_COLOR);
         graph.beginShape();
