@@ -155,7 +155,7 @@ function Ball(x, y, direction, id, model, role) {
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
               //bounce far right
-              if(this.x>arenaWidth/2+45&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+              if(this.x>arenaWidth/2+50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
                 this.direction=-this.direction+Math.PI;
                 this.x-=2;
                 }
@@ -165,7 +165,7 @@ function Ball(x, y, direction, id, model, role) {
                   this.x-=2;
                   }
                 //far left
-                if(this.x<arenaWidth/2-45&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+                if(this.x<arenaWidth/2-50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
                   this.direction=-this.direction+Math.PI;
                   this.x+=2;
                   }
@@ -175,7 +175,7 @@ function Ball(x, y, direction, id, model, role) {
                     this.x+=2;
                     }
               //far bottom
-              if(this.y<arenaHeight/2-50&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+              if(this.y<arenaHeight/2-55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
                 this.direction=-1*this.direction;
                 this.y+=2;
               }
@@ -185,7 +185,7 @@ function Ball(x, y, direction, id, model, role) {
                 this.y+=2;
               }
               //far top
-              if(this.y>arenaHeight/2+50&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+              if(this.y>arenaHeight/2+55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
@@ -314,15 +314,39 @@ function Model() {
         for (let i = 0; i < this.population; i++) {
             let x=Math.random() * arenaWidth;
             let y=Math.random() * arenaHeight;
-            while(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65))){
+            let direction=Math.random() * 2 * Math.PI;
+            if(i==0){
+              let inInner=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-55&&y<arenaHeight/2+55)));
+              let inOuter=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+              while(!inOuter||inInner){
+                x=Math.random() * arenaWidth;
+                y=Math.random() * arenaWidth;
+                inInner=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65)));
+                inOuter=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+
+                let dx=arenaWidth/2-x;
+                let dy=arenaHeight/2-y;
+                let baseangle=Math.atan(dy/dx);
+                if(dx<0){direction=baseangle+Math.PI;}
+                else{direction=baseangle;}
+              }
+            }
+            else{
+            while(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70))){
                x=Math.random() * arenaWidth;
                y=Math.random() * arenaWidth;
-
+             }
             }
-            this.balls.push(new Ball(x,y, Math.random() * 2 * Math.PI, i, this, "Normal"));
+            this.balls.push(new Ball(x,y, direction, i, this, "Normal"));
         }
         for(let i=0; i<this.doctorPopulation; i++){
-          this.balls.push(new Ball(Math.random()*30 +arenaWidth/2-15, Math.random() * 30+arenaHeight/2-15, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
+          let x=Math.random() * arenaWidth;
+          let y=Math.random() * arenaHeight;
+          while(!(((x>arenaWidth/2-55&&x<arenaWidth/2+55)&&(y>arenaHeight/2-15&&y<arenaHeight/2+15))||((x>arenaWidth/2-15&&x<arenaWidth/2+15)&&(y>arenaHeight/2-60&&y<arenaHeight/2+60)))){
+             x=Math.random() * arenaWidth;
+             y=Math.random() * arenaWidth;
+           }
+          this.balls.push(new Ball(x, y, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
         }
         /* Make one of them sick */
         this.balls[0].contactWith(this.sickTime,this.role);
