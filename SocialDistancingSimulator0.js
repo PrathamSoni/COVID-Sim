@@ -69,7 +69,7 @@ function Ball(x, y, direction, id, model, role) {
     /* interact with a ball whose status is s and whose role is r and whose source is t. */
     this.contactWith = function (s,r,t) {
         if (this.isHealthy() && (s > 0)) {
-          if(r=="Doctor"){
+          if(r=="Doctor"&&!(quarantine=="leave"&&this.x>arenaWidth/2-5&&this.x<arenaWidth/2+5&&this.y>arenaHeight/2-5&&this.y<arenaHeight/2+5)){
             let random=Math.random();
             if(ppe=="n95"){
               if(random<.05){this.makeSick(t);}
@@ -194,49 +194,54 @@ function Ball(x, y, direction, id, model, role) {
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
-
+              if(this.isSick()&&quarantine=="leave"){
+                this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/4 + arenaWidth) % arenaWidth ;
+                this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/4 + arenaHeight) % arenaHeight ;
+              }
+              else{
               this.x = (this.x + this.model.velocity() * Math.cos(this.direction) + arenaWidth) % arenaWidth ;
               this.y = (this.y + this.model.velocity() * Math.sin(this.direction) + arenaHeight) % arenaHeight ;
+            }
             }
 
           else{
             //far right
-            if(this.x<arenaWidth/2+45&&this.x>arenaWidth/2&&this.y<arenaHeight/2+10&&this.y>arenaHeight/2-10){
+            if(this.x<arenaWidth/2+40&&this.x>arenaWidth/2&&this.y<arenaHeight/2+5&&this.y>arenaHeight/2-5){
               this.direction=-this.direction+Math.PI;
               this.x+=2;
               }
             //right
-              if(this.x<arenaWidth/2+10&&this.x>arenaWidth/2&&((this.y>arenaHeight/2+10&&this.y<arenaHeight/2+50)||(this.y<arenaHeight/2-10&&this.y>arenaHeight/2-50))){
+              if(this.x<arenaWidth/2+5&&this.x>arenaWidth/2&&((this.y>arenaHeight/2+5&&this.y<arenaHeight/2+45)||(this.y<arenaHeight/2-5&&this.y>arenaHeight/2-45))){
                 this.direction=-this.direction+Math.PI;
                 this.x+=2;
                 }
               //far left
-              if(this.x>arenaWidth/2-45&&this.x<arenaWidth/2&&this.y<arenaHeight/2+10&&this.y>arenaHeight/2-10){
+              if(this.x>arenaWidth/2-40&&this.x<arenaWidth/2&&this.y<arenaHeight/2+5&&this.y>arenaHeight/2-5){
                 this.direction=-this.direction+Math.PI;
                 this.x-=2;
                 }
               //left
-                if(this.x>arenaWidth/2-10&&this.x<arenaWidth/2&&((this.y>arenaHeight/2+10&&this.y<arenaHeight/2+50)||(this.y<arenaHeight/2-10&&this.y>arenaHeight/2-50))){
+                if(this.x>arenaWidth/2-5&&this.x<arenaWidth/2&&((this.y>arenaHeight/2+5&&this.y<arenaHeight/2+45)||(this.y<arenaHeight/2-5&&this.y>arenaHeight/2-45))){
                   this.direction=-this.direction+Math.PI;
                   this.x-=2;
                   }
             //far bottom
-            if(this.y>arenaHeight/2-50&&this.y<arenaHeight/2&&this.x>arenaWidth/2-10&&this.x<arenaWidth/2+10){
+            if(this.y>arenaHeight/2-45&&this.y<arenaHeight/2&&this.x>arenaWidth/2-5&&this.x<arenaWidth/2+5){
               this.direction=-1*this.direction;
               this.y-=2;
             }
             //bottom
-            if(this.y>arenaHeight/2-10&&this.y<arenaHeight/2&&((this.x<arenaWidth/2-10&&this.x>arenaWidth/2-45)||(this.x>arenaWidth/2+10&&this.x<arenaWidth/2+45))){
+            if(this.y>arenaHeight/2-5&&this.y<arenaHeight/2&&((this.x<arenaWidth/2-5&&this.x>arenaWidth/2-40)||(this.x>arenaWidth/2+5&&this.x<arenaWidth/2+40))){
               this.direction=-1*this.direction;
               this.y-=2;
             }
             //far top
-            if(this.y<arenaHeight/2+50&&this.y>arenaHeight/2&&this.x>arenaWidth/2-10&&this.x<arenaWidth/2+10){
+            if(this.y<arenaHeight/2+45&&this.y>arenaHeight/2&&this.x>arenaWidth/2-5&&this.x<arenaWidth/2+5){
               this.direction=-1*this.direction;
               this.y+=2;
             }
             //top
-            if(this.y<arenaHeight/2+10&&this.y>arenaHeight/2&&((this.x<arenaWidth/2-10&&this.x>arenaWidth/2-45)||(this.x>arenaWidth/2+10&&this.x<arenaWidth/2+45))){
+            if(this.y<arenaHeight/2+5&&this.y>arenaHeight/2&&((this.x<arenaWidth/2-5&&this.x>arenaWidth/2-40)||(this.x>arenaWidth/2+5&&this.x<arenaWidth/2+40 ))){
               this.direction=-1*this.direction;
               this.y+=2;
             }
@@ -274,6 +279,7 @@ function Ball(x, y, direction, id, model, role) {
         if(model.currentTime==model.maxTime-2&&this.isDead()){
           diameter=2*this.diameter;
         }
+
         if(this.role=="Normal"){
           arena.ellipse(this.x, this.y, diameter, diameter);
       }
@@ -297,8 +303,8 @@ function Model() {
         this.sickTime = sickTime; /* how long a ball is animation frames */
         this.maxTime = graphWidth; /* maximum time of simulation */
         this.mortality = mortality; /* how likely an infected ball dies */
-        this.population = 500; /* initial population */
-        this.doctorPopulation=15;
+        this.population = 650; /* initial population */
+        this.doctorPopulation=20;
         /* statistics */
         this.currentTime = 0;
         this.completionTime = 0;
@@ -317,12 +323,12 @@ function Model() {
             let direction=Math.random() * 2 * Math.PI;
             if(i==0){
               let inInner=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-55&&y<arenaHeight/2+55)));
-              let inOuter=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+              let inOuter=(((x>arenaWidth/2-50&&x<arenaWidth/2+50)&&(y>arenaHeight/2-50&&y<arenaHeight/2+50)));
               while(!inOuter||inInner){
                 x=Math.random() * arenaWidth;
                 y=Math.random() * arenaWidth;
                 inInner=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65)));
-                inOuter=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+                inOuter=(((x>arenaWidth/2-50&&x<arenaWidth/2+50)&&(y>arenaHeight/2-50&&y<arenaHeight/2+50)));
 
                 let dx=arenaWidth/2-x;
                 let dy=arenaHeight/2-y;
@@ -342,7 +348,7 @@ function Model() {
         for(let i=0; i<this.doctorPopulation; i++){
           let x=Math.random() * arenaWidth;
           let y=Math.random() * arenaHeight;
-          while(!(((x>arenaWidth/2-55&&x<arenaWidth/2+55)&&(y>arenaHeight/2-15&&y<arenaHeight/2+15))||((x>arenaWidth/2-15&&x<arenaWidth/2+15)&&(y>arenaHeight/2-60&&y<arenaHeight/2+60)))){
+          while(!(((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-15&&y<arenaHeight/2+15))||((x>arenaWidth/2-15&&x<arenaWidth/2+15)&&(y>arenaHeight/2-30&&y<arenaHeight/2+30)))){
              x=Math.random() * arenaWidth;
              y=Math.random() * arenaWidth;
            }
@@ -390,7 +396,7 @@ function Model() {
 
     /* The velocity of balls, depending on social distance. */
    this.velocity = function () {
-       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 250 ;
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 225 ;
        return velocity;
    }
 
@@ -408,15 +414,34 @@ function Model() {
         let doc=0;
 
         for (let b of this.balls) {
-            if (b.isImmune()) { im++;si++; }
-            else if (b.isDead()) { si++;
-              if(b.role=="Doctor"){dd++}
-              else{dp++}}
-            else if (b.isSick()) { si++; }
-            else { he++; }
+            if (b.isImmune()) {
+               im++;
+               si++;
+             }
+            else if (b.isDead()) {
+              si++;
+              if(b.role=="Doctor"){
+                dd++
+              }
+              else{
+                dp++
+              }
+            }
+            else if (b.isSick()) {
+               si++;
+             }
+            else {
+              he++;
+            }
 
-            if(b.source=="community"){co++;}
-            if(b.source=="doctor"){doc++;}
+            if(b.source=="community"){
+              co++;
+            }
+            if(b.source=="doctor"){
+              if(b.role=="Normal"){
+              doc++;
+            }
+          }
         }
 
         this.immuneStat.push(im);
