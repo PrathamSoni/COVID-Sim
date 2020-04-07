@@ -69,15 +69,11 @@ function Ball(x, y, direction, id, model, role) {
     /* interact with a ball whose status is s and whose role is r and whose source is t. */
     this.contactWith = function (s,r,t) {
         if (this.isHealthy() && (s > 0)) {
-          if(r=="Doctor"&&!(quarantine=="leave"&&this.x>arenaWidth/2-5&&this.x<arenaWidth/2+5&&this.y>arenaHeight/2-5&&this.y<arenaHeight/2+5)){
-            let random=Math.random();
-            if(ppe=="n95"){
-              if(random<.05){this.makeSick(t);}
-            }
-            if(ppe=="mask"){
-              if(random<.5){this.makeSick(t);}
-            }
-            if(ppe=="none"){this.makeSick(t);}
+          if(this.id==this.model.population){
+              this.makeSick(t);
+          }
+          if(r=="Doctor"&&!(quarantine=="leave"&&this.x>arenaWidth/2-6&&this.x<arenaWidth/2+6&&this.y>arenaHeight/2-6&&this.y<arenaHeight/2+6)){
+            this.makeSick(t);
           }
 
           else{this.makeSick(t);}
@@ -87,6 +83,11 @@ function Ball(x, y, direction, id, model, role) {
     this.makeSick=function(t){
       let random=Math.random();
       if(this.role=="Doctor"){
+        if(this.id==this.model.population){
+          this.status = this.model.sickTime;
+          this.source="doctor";
+        }
+        else{
         if(ppe=="n95"){
           if(random<.05){
             this.status = this.model.sickTime;
@@ -104,12 +105,12 @@ function Ball(x, y, direction, id, model, role) {
         if(ppe=="none"){
         this.status = this.model.sickTime;
         this.source="doctor";
-        }
+      }}
       }
       else{
         this.status = this.model.sickTime;
         this.source=t;
-        if(Math.random()>.7){
+        if(Math.random()>.8){
         this.stationary=false;
         /*calculate initial direction towards hospital*/
         let dx=arenaWidth/2-this.x;
@@ -155,42 +156,42 @@ function Ball(x, y, direction, id, model, role) {
         if (!this.stationary && !this.isDead()) {
             if(this.role=="Doctor"){
               //bounce far right
-              if(this.x>arenaWidth/2+50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+              if(this.x>arenaWidth/2+75&&this.y<arenaHeight/2+30&&this.y>arenaHeight/2-30){
                 this.direction=-this.direction+Math.PI;
                 this.x-=2;
                 }
               //right
-                if(this.x>arenaWidth/2+10&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
+                if(this.x>arenaWidth/2+25&&(this.y>arenaHeight/2+30||this.y<arenaHeight/2-30)){
                   this.direction=-this.direction+Math.PI;
                   this.x-=2;
                   }
                 //far left
-                if(this.x<arenaWidth/2-50&&this.y<arenaHeight/2+15&&this.y>arenaHeight/2-15){
+                if(this.x<arenaWidth/2-75&&this.y<arenaHeight/2+30&&this.y>arenaHeight/2-30){
                   this.direction=-this.direction+Math.PI;
                   this.x+=2;
                   }
                 //left
-                  if(this.x<arenaWidth/2-10&&(this.y>arenaHeight/2+15||this.y<arenaHeight/2-15)){
+                  if(this.x<arenaWidth/2-25&&(this.y>arenaHeight/2+30||this.y<arenaHeight/2-30)){
                     this.direction=-this.direction+Math.PI;
                     this.x+=2;
                     }
               //far bottom
-              if(this.y<arenaHeight/2-55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+              if(this.y<arenaHeight/2-70&&this.x>arenaWidth/2-30&&this.x<arenaWidth/2+30){
                 this.direction=-1*this.direction;
                 this.y+=2;
               }
               //bottom
-              if(this.y<arenaHeight/2-10&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+              if(this.y<arenaHeight/2-25&&(this.x<arenaWidth/2-30||this.x>arenaWidth/2+30)){
                 this.direction=-1*this.direction;
                 this.y+=2;
               }
               //far top
-              if(this.y>arenaHeight/2+55&&this.x>arenaWidth/2-15&&this.x<arenaWidth/2+15){
+              if(this.y>arenaHeight/2+70&&this.x>arenaWidth/2-30&&this.x<arenaWidth/2+30){
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
               //top
-              if(this.y>arenaHeight/2+10&&(this.x<arenaWidth/2-15||this.x>arenaWidth/2+15)){
+              if(this.y>arenaHeight/2+25&&(this.x<arenaWidth/2-30||this.x>arenaWidth/2+30)){
                 this.direction=-1*this.direction;
                 this.y-=2;
               }
@@ -206,42 +207,42 @@ function Ball(x, y, direction, id, model, role) {
 
           else{
             //far right
-            if(this.x<arenaWidth/2+40&&this.x>arenaWidth/2&&this.y<arenaHeight/2+5&&this.y>arenaHeight/2-5){
+            if(this.x<arenaWidth/2+45&&this.x>arenaWidth/2&&this.y<arenaHeight/2+10&&this.y>arenaHeight/2-10){
               this.direction=-this.direction+Math.PI;
               this.x+=2;
               }
             //right
-              if(this.x<arenaWidth/2+5&&this.x>arenaWidth/2&&((this.y>arenaHeight/2+5&&this.y<arenaHeight/2+45)||(this.y<arenaHeight/2-5&&this.y>arenaHeight/2-45))){
+              if(this.x<arenaWidth/2+10&&this.x>arenaWidth/2&&((this.y>arenaHeight/2+10&&this.y<arenaHeight/2+50)||(this.y<arenaHeight/2-10&&this.y>arenaHeight/2-50))){
                 this.direction=-this.direction+Math.PI;
                 this.x+=2;
                 }
               //far left
-              if(this.x>arenaWidth/2-40&&this.x<arenaWidth/2&&this.y<arenaHeight/2+5&&this.y>arenaHeight/2-5){
+              if(this.x>arenaWidth/2-45&&this.x<arenaWidth/2&&this.y<arenaHeight/2+10&&this.y>arenaHeight/2-10){
                 this.direction=-this.direction+Math.PI;
                 this.x-=2;
                 }
               //left
-                if(this.x>arenaWidth/2-5&&this.x<arenaWidth/2&&((this.y>arenaHeight/2+5&&this.y<arenaHeight/2+45)||(this.y<arenaHeight/2-5&&this.y>arenaHeight/2-45))){
+                if(this.x>arenaWidth/2-10&&this.x<arenaWidth/2&&((this.y>arenaHeight/2+10&&this.y<arenaHeight/2+50)||(this.y<arenaHeight/2-10&&this.y>arenaHeight/2-50))){
                   this.direction=-this.direction+Math.PI;
                   this.x-=2;
                   }
             //far bottom
-            if(this.y>arenaHeight/2-45&&this.y<arenaHeight/2&&this.x>arenaWidth/2-5&&this.x<arenaWidth/2+5){
+            if(this.y>arenaHeight/2-50&&this.y<arenaHeight/2&&this.x>arenaWidth/2-10&&this.x<arenaWidth/2+10){
               this.direction=-1*this.direction;
               this.y-=2;
             }
             //bottom
-            if(this.y>arenaHeight/2-5&&this.y<arenaHeight/2&&((this.x<arenaWidth/2-5&&this.x>arenaWidth/2-40)||(this.x>arenaWidth/2+5&&this.x<arenaWidth/2+40))){
+            if(this.y>arenaHeight/2-10&&this.y<arenaHeight/2&&((this.x<arenaWidth/2-10&&this.x>arenaWidth/2-45)||(this.x>arenaWidth/2+10&&this.x<arenaWidth/2+45))){
               this.direction=-1*this.direction;
               this.y-=2;
             }
             //far top
-            if(this.y<arenaHeight/2+45&&this.y>arenaHeight/2&&this.x>arenaWidth/2-5&&this.x<arenaWidth/2+5){
+            if(this.y<arenaHeight/2+50&&this.y>arenaHeight/2&&this.x>arenaWidth/2-10&&this.x<arenaWidth/2+10){
               this.direction=-1*this.direction;
               this.y+=2;
             }
             //top
-            if(this.y<arenaHeight/2+5&&this.y>arenaHeight/2&&((this.x<arenaWidth/2-5&&this.x>arenaWidth/2-40)||(this.x>arenaWidth/2+5&&this.x<arenaWidth/2+40 ))){
+            if(this.y<arenaHeight/2+10&&this.y>arenaHeight/2&&((this.x<arenaWidth/2-10&&this.x>arenaWidth/2-45)||(this.x>arenaWidth/2+10&&this.x<arenaWidth/2+45 ))){
               this.direction=-1*this.direction;
               this.y+=2;
             }
@@ -322,13 +323,13 @@ function Model() {
             let y=Math.random() * arenaHeight;
             let direction=Math.random() * 2 * Math.PI;
             if(i==0){
-              let inInner=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-55&&y<arenaHeight/2+55)));
-              let inOuter=(((x>arenaWidth/2-50&&x<arenaWidth/2+50)&&(y>arenaHeight/2-50&&y<arenaHeight/2+50)));
+              let inInner=(((x>arenaWidth/2-75&&x<arenaWidth/2+75)&&(y>arenaHeight/2-30&&y<arenaHeight/2+30))||((x>arenaWidth/2-30&&x<arenaWidth/2+30)&&(y>arenaHeight/2-80&&y<arenaHeight/2+80)));
+              let inOuter=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-60&&y<arenaHeight/2+60)));
               while(!inOuter||inInner){
                 x=Math.random() * arenaWidth;
                 y=Math.random() * arenaWidth;
-                inInner=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-65&&y<arenaHeight/2+65)));
-                inOuter=(((x>arenaWidth/2-50&&x<arenaWidth/2+50)&&(y>arenaHeight/2-50&&y<arenaHeight/2+50)));
+                inInner=(((x>arenaWidth/2-75&&x<arenaWidth/2+75)&&(y>arenaHeight/2-30&&y<arenaHeight/2+30))||((x>arenaWidth/2-30&&x<arenaWidth/2+30)&&(y>arenaHeight/2-80&&y<arenaHeight/2+80)));
+                inOuter=(((x>arenaWidth/2-60&&x<arenaWidth/2+60)&&(y>arenaHeight/2-60&&y<arenaHeight/2+60)));
 
                 let dx=arenaWidth/2-x;
                 let dy=arenaHeight/2-y;
@@ -338,7 +339,7 @@ function Model() {
               }
             }
             else{
-            while(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70))){
+            while(((x>arenaWidth/2-80&&x<arenaWidth/2+80)&&(y>arenaHeight/2-35&&y<arenaHeight/2+35))||((x>arenaWidth/2-35&&x<arenaWidth/2+35)&&(y>arenaHeight/2-85&&y<arenaHeight/2+85))){
                x=Math.random() * arenaWidth;
                y=Math.random() * arenaWidth;
              }
@@ -348,7 +349,7 @@ function Model() {
         for(let i=0; i<this.doctorPopulation; i++){
           let x=Math.random() * arenaWidth;
           let y=Math.random() * arenaHeight;
-          while(!(((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-15&&y<arenaHeight/2+15))||((x>arenaWidth/2-15&&x<arenaWidth/2+15)&&(y>arenaHeight/2-30&&y<arenaHeight/2+30)))){
+          while(!(((x>arenaWidth/2-70&&x<arenaWidth/2+70)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-75&&y<arenaHeight/2+75)))){
              x=Math.random() * arenaWidth;
              y=Math.random() * arenaWidth;
            }
@@ -396,7 +397,7 @@ function Model() {
 
     /* The velocity of balls, depending on social distance. */
    this.velocity = function () {
-       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 250 ;
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 200 ;
        return velocity;
    }
 
@@ -593,13 +594,13 @@ arena = new p5(
                 arena.fill("#C0DBF2");
                 //arena.rect(arenaWidth/2-75, arenaHeight/2-75, 150, 150,5,5,5,5)
 
-                arena.rect(arenaWidth/2-15, arenaHeight/2-60, 30, 120);
-                arena.rect(arenaWidth/2-55, arenaHeight/2-15, 110, 30);
+                arena.rect(arenaWidth/2-30, arenaHeight/2-80, 60, 160);
+                arena.rect(arenaWidth/2-75, arenaHeight/2-30, 150, 60);
                 //arena.fill("#BAD7F0");
                 if(quarantine=="leave"){
                   arena.strokeWeight(2);
-                  arena.stroke(0);
-                  arena.circle(arenaWidth/2,arenaHeight/2,20)
+                  arena.stroke("#2222AA");
+                  arena.circle(arenaWidth/2,arenaHeight/2,25)
                 }
                 arena.noStroke();
                 /* dead balls first */
