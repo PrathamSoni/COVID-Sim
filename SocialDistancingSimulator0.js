@@ -63,7 +63,7 @@ function Ball(x, y, direction, id, model, role) {
     this.isSick = function () { return (this.status > 0) ; };
     this.deadTime=0;
     this.source="";
-    if(this.role=="Normal"&&.75>Math.random()&&id!=0){
+    if(this.role=="Normal"&&.9>Math.random()&&id!=0){
       this.stationary=true;
     }
     /* interact with a ball whose status is s and whose role is r and whose source is t. */
@@ -355,8 +355,8 @@ function Model() {
           this.balls.push(new Ball(x, y, Math.random() * 2 * Math.PI, this.population+i, this, "Doctor"));
         }
         /* Make one of them sick */
-        this.balls[0].contactWith(this.sickTime,this.role);
-        this.balls[0].source="community";
+        this.balls[this.population].contactWith(this.sickTime,this.role, "doctor");
+        this.balls[this.population].source="doctor";
     }
 
     this.refreshParameters = function () {
@@ -479,7 +479,7 @@ function Model() {
         let co=this.communitySourceStat[this.communitySourceStat.length-1];
         let doc=this.doctorSourceStat[this.doctorSourceStat.length-1];
         //document.getElementById('healthy-stat0').innerHTML = he;
-        document.getElementById('provider-percentage').innerHTML = Math.round(doc/(doc+co)*100) + "%";
+        //document.getElementById('provider-percentage').innerHTML = Math.round(doc/(doc+co)*100) + "%";
         document.getElementById('sick-stat0').innerHTML = si + "%";
         document.getElementById('patient-deaths').innerHTML = dp;
         document.getElementById('doctor-deaths').innerHTML = dd;
