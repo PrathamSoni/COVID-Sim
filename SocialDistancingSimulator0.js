@@ -349,7 +349,7 @@ function Model() {
         for(let i=0; i<this.doctorPopulation; i++){
           let x=Math.random() * arenaWidth;
           let y=Math.random() * arenaHeight;
-          while(!(((x>arenaWidth/2-70&&x<arenaWidth/2+70)&&(y>arenaHeight/2-25&&y<arenaHeight/2+25))||((x>arenaWidth/2-25&&x<arenaWidth/2+25)&&(y>arenaHeight/2-75&&y<arenaHeight/2+75)))){
+          while(!(((x>arenaWidth/2-75&&x<arenaWidth/2+75)&&(y>arenaHeight/2-30&&y<arenaHeight/2+30))||((x>arenaWidth/2-30&&x<arenaWidth/2+30)&&(y>arenaHeight/2-80&&y<arenaHeight/2+80)))){
              x=Math.random() * arenaWidth;
              y=Math.random() * arenaWidth;
            }
@@ -397,7 +397,7 @@ function Model() {
 
     /* The velocity of balls, depending on social distance. */
    this.velocity = function () {
-       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 200 ;
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 250 ;
        return velocity;
    }
 
