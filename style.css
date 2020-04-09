@@ -220,6 +220,7 @@ td
   text-align: center;
   word-wrap:break-word;
 }
+
 .InfectedCivilian{
 text-align: center;
   color: #A90D0E;
@@ -243,20 +244,20 @@ text-align: center;
 #RestartButtonLabel
 {
   position:relative;
-  top:-9vw;
-  left:3.85vw;
+  top:-2.75vw;
+  left:-5vw;
   color: #FFFFFF;
   pointer-events: none;
 }
 
 #restart-button0
 {
-  width:14.5vw;
-  height:14.5vw;
+  width:6vw;
+  height:6vw;
   outline: none;
   position: relative;
-  margin-top: -1vw;
-  margin-left: -.5vw;
+  margin-top: 1vw;
+  margin-left: 5vw;
 }
 
 #buttonDiv
@@ -398,7 +399,7 @@ text-align: center;
   height: 3vw;
   border-radius: 50%;
   border-width: 2px;
-  border-color: #000000 !important;
+  border-color: #1212a1 !important;
   display: inline-block;
   border:solid;
 }
