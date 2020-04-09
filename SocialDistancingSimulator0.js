@@ -286,8 +286,8 @@ function Ball(x, y, direction, id, model, role) {
       }
         else{
 
-          arena.rect(this.x-diameter/5, this.y-diameter/2, diameter/2.5, diameter);
-          arena.rect(this.x-diameter/2, this.y-diameter/5, diameter, diameter/2.5);
+          arena.rect(this.x-diameter/6, this.y-diameter/2, diameter/3, diameter);
+          arena.rect(this.x-diameter/2, this.y-diameter/6, diameter, diameter/3);
 
         }
 
