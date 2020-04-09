@@ -200,8 +200,8 @@ function Ball(x, y, direction, id, model, role) {
                 this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/4 + arenaHeight) % arenaHeight ;
               }
               else{
-              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/2 + arenaWidth) % arenaWidth ;
-              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/2 + arenaHeight) % arenaHeight ;
+              this.x = (this.x + this.model.velocity() * Math.cos(this.direction)/1.25 + arenaWidth) % arenaWidth ;
+              this.y = (this.y + this.model.velocity() * Math.sin(this.direction)/1.25 + arenaHeight) % arenaHeight ;
             }
             }
 
@@ -322,14 +322,62 @@ function Model() {
             let x=Math.random() * arenaWidth;
             let y=Math.random() * arenaHeight;
             let direction=Math.random() * 2 * Math.PI;
-            if(i==0||i==1||i==2||i==3){
+            if(i==0){
               let inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
-              let inOuter=(((x>arenaWidth/2-40&&x<arenaWidth/2+40)&&(y>arenaHeight/2-40&&y<arenaHeight/2+40)));
+              let inOuter=(((x>arenaWidth/2-0&&x<arenaWidth/2+40)&&(y>arenaHeight/2-0&&y<arenaHeight/2+40)));
               while(!inOuter||inInner){
                 x=Math.random() * arenaWidth;
                 y=Math.random() * arenaWidth;
                 inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
-                inOuter=(((x>arenaWidth/2-40&&x<arenaWidth/2+40)&&(y>arenaHeight/2-40&&y<arenaHeight/2+40)));
+                inOuter=(((x>arenaWidth/2-0&&x<arenaWidth/2+40)&&(y>arenaHeight/2-0&&y<arenaHeight/2+40)));
+
+                let dx=arenaWidth/2-x;
+                let dy=arenaHeight/2-y;
+                let baseangle=Math.atan(dy/dx);
+                if(dx<0){direction=baseangle+Math.PI;}
+                else{direction=baseangle;}
+              }
+            }
+            if(i==1){
+              let inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+              let inOuter=(((x>arenaWidth/2-0&&x<arenaWidth/2+40)&&(y>arenaHeight/2-40&&y<arenaHeight/2+0)));
+              while(!inOuter||inInner){
+                x=Math.random() * arenaWidth;
+                y=Math.random() * arenaWidth;
+                inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+                inOuter=(((x>arenaWidth/2-0&&x<arenaWidth/2+40)&&(y>arenaHeight/2-40&&y<arenaHeight/2+0)));
+
+                let dx=arenaWidth/2-x;
+                let dy=arenaHeight/2-y;
+                let baseangle=Math.atan(dy/dx);
+                if(dx<0){direction=baseangle+Math.PI;}
+                else{direction=baseangle;}
+              }
+            }
+            if(i==2){
+              let inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+              let inOuter=(((x>arenaWidth/2-40&&x<arenaWidth/2+0)&&(y>arenaHeight/2-0&&y<arenaHeight/2+40)));
+              while(!inOuter||inInner){
+                x=Math.random() * arenaWidth;
+                y=Math.random() * arenaWidth;
+                inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+                inOuter=(((x>arenaWidth/2-40&&x<arenaWidth/2+0)&&(y>arenaHeight/2-0&&y<arenaHeight/2+40)));
+
+                let dx=arenaWidth/2-x;
+                let dy=arenaHeight/2-y;
+                let baseangle=Math.atan(dy/dx);
+                if(dx<0){direction=baseangle+Math.PI;}
+                else{direction=baseangle;}
+              }
+            }
+            if(i==3){
+              let inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+              let inOuter=(((x>arenaWidth/2-40&&x<arenaWidth/2+0)&&(y>arenaHeight/2-40&&y<arenaHeight/2+0)));
+              while(!inOuter||inInner){
+                x=Math.random() * arenaWidth;
+                y=Math.random() * arenaWidth;
+                inInner=(((x>arenaWidth/2-65&&x<arenaWidth/2+65)&&(y>arenaHeight/2-20&&y<arenaHeight/2+20))||((x>arenaWidth/2-20&&x<arenaWidth/2+20)&&(y>arenaHeight/2-70&&y<arenaHeight/2+70)));
+                inOuter=(((x>arenaWidth/2-40&&x<arenaWidth/2+0)&&(y>arenaHeight/2-40&&y<arenaHeight/2+0)));
 
                 let dx=arenaWidth/2-x;
                 let dy=arenaHeight/2-y;
@@ -397,7 +445,7 @@ function Model() {
 
     /* The velocity of balls, depending on social distance. */
    this.velocity = function () {
-       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 250 ;
+       let velocity = (arenaWidth + arenaHeight) * (1 - this.socialDistance) / 225 ;
        return velocity;
    }
 
@@ -523,6 +571,14 @@ function Model() {
             graph.vertex(x0 + t * dx, y0 + this.immuneStat[t] * dy);
         }
         graph.endShape(graph.CLOSE);*/
+        graph.fill("#000000");
+        let tickWidth=1;
+        let numTicks=7;
+        let interval=(graphWidth-2)/(numTicks-1);
+        for(let i=0; i<numTicks;i++){
+          graph.rect(interval*i,5*graphHeight/6,tickWidth,graphHeight/6)
+        }
+
         graph.noFill();
         graph.rect(x0, y0, graphWidth, graphHeight);
     };
