@@ -12,9 +12,9 @@
 </head>
 
 <body>
-  <h1>Transmission Simulator</h1>
-    <div id="topRow">
 
+    <div id="topRow">
+      <h1>Transmission Simulator</h1>
       <div id="options">
         <div id="policy">
           <span class="OptionsLabel"><span class = "label">Quarantine<br>Policy</span></span>
@@ -33,10 +33,10 @@
           </select>
         </div>
 
-      </div>
-      <div id="buttonDiv">
-          <input id='restart-button0' type='image' src='images/Button_1.png' value='Restart'/>
-          <label id="RestartButtonLabel" for="restart-button0">RESET</label>
+        <div id="buttonDiv">
+            <input id='restart-button0' type='image' src='images/Button_1.png' value='Restart'/>
+            <label id="RestartButtonLabel" for="restart-button0">RESET</label>
+        </div>
       </div>
     </div>
 
@@ -46,7 +46,7 @@
       <div id="sickStat">
         <span id="sick-stat0">0%</span>
         <p id="sickLabel">
-          <br>Positive Patients<br> & Providers
+          Positive Patients<br> & Providers
         </p>
       </div>
 
@@ -55,12 +55,12 @@
 
         <div id="doctorDeaths">
           <span id="doctor-deaths"></span>
-          Provider(s)
+          <span id="deathLabel">Provider(s)</span>
         </div>
 
         <div id="patientDeaths">
           <span id="patient-deaths"></span>
-          Community
+          <span id="deathLabel">Community</span>
         </div>
       </div>
     </div>
