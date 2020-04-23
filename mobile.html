@@ -14,7 +14,13 @@
   <script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
   <script language="javascript" type="text/javascript" src="SocialDistancingSimulator0.js"></script>
 
-
+  <script type="text/javascript">
+    <!--
+    if (screen.width > 700) {
+    document.location = "desktop.html";
+    }
+    //-->
+  </script>
   <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
 
   <link rel="stylesheet" href="mobile.css">
@@ -104,8 +110,6 @@
           <th class="sideHeader">Healthy</th>
           <td><span class="dot HealthyCivilian"></span></td>
           <td><span class="HealthyProvider"><img class="HealthyProvider" src="images/HealthyProvider.png"></span></td>
-          <td rowspan="3"><span class="QuarantineIcon"></span></td>
-          <td rowspan="3"><span class="HospitalIcon"><img class="HospitalIcon" src="images/Hospital.png"></span></td>
         </tr>
         <tr>
           <th class="sideHeader">COVID +</th>
@@ -121,6 +125,14 @@
           <td></td>
           <th class="bottomHeader">Community<br>Member</th>
           <th class="bottomHeader">Provider</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td><span class="QuarantineIcon"></span></td>
+          <td><span class="HospitalIcon"><img class="HospitalIcon" src="images/Hospital.png"></span></td>
+        </tr>
+        <tr>
+          <td></td>
           <th class="bottomHeader">Quarantine</th>
           <th class="bottomHeader">Hospital</th>
         </tr>
