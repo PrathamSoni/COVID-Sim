@@ -423,8 +423,8 @@ function Model() {
         this.socialDistance = 0.0;
         this.mortality = .04;
         this.sickTime = 5 * FRAME_RATE/3;
-
-        if(document.location === "desktop.html")
+        console.log(document.location);
+        if (screen.width > 700)
         {
           for(let i=0; i<document.getElementsByName("quarantine").length;i++){
             document.getElementsByName("quarantine")[i].disabled = true;
@@ -451,7 +451,10 @@ function Model() {
           {
             quarantine=document.getElementById("QuarantinePolicy").value;
             ppe=document.getElementById("PPEPolicy").value;
+            document.getElementById("QuarantinePolicy").disabled = true;
+            document.getElementById("PPEPolicy").disabled = true;
           }
+
         }
     }
 
@@ -640,7 +643,7 @@ arena = new p5(
               }
               else {
                 model.restart ();
-              model.refreshParameters();
+                model.refreshParameters();
               }
               });
 
@@ -653,13 +656,20 @@ arena = new p5(
             if (model.isFinished()) {
               document.getElementById("restart-button0").src = "images/Button_0.png";
               document.getElementById("RestartButtonLabel").innerHTML = "START";
-              for(let i=0; i<document.getElementsByName("quarantine").length;i++){
-                document.getElementsByName("quarantine")[i].disabled = false;
-                document.getElementsByName("quarantine")[i].parentElement.classList.remove("noHover");
+              if (screen.width > 700)
+              {
+                for(let i=0; i<document.getElementsByName("quarantine").length;i++){
+                  document.getElementsByName("quarantine")[i].disabled = false;
+                  document.getElementsByName("quarantine")[i].parentElement.classList.remove("noHover");
+                }
+                for(let i=0; i<document.getElementsByName("ppe").length;i++){
+                  document.getElementsByName("ppe")[i].disabled = false;
+                  document.getElementsByName("ppe")[i].parentElement.classList.remove("noHover");
+                }
               }
-              for(let i=0; i<document.getElementsByName("ppe").length;i++){
-                document.getElementsByName("ppe")[i].disabled = false;
-                document.getElementsByName("ppe")[i].parentElement.classList.remove("noHover");
+              else {
+                document.getElementById("QuarantinePolicy").disabled = false;
+                document.getElementById("PPEPolicy").disabled = false;
               }
             }
             else {
@@ -678,7 +688,7 @@ arena = new p5(
                 //arena.fill("#BAD7F0");
                 if(quarantine=="leave"){
                   arena.strokeWeight(2);
-                  arena.stroke("#2222AA");
+                  arena.stroke("#1B75C3");
                   arena.circle(arenaWidth/2,arenaHeight/2,25)
                 }
                 arena.noStroke();

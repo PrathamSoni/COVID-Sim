@@ -17,7 +17,7 @@
   <script type="text/javascript">
     <!--
     if (screen.width > 700) {
-    document.location = "desktop.html";
+      document.location = "desktop.html";
     }
     //-->
   </script>
@@ -34,7 +34,7 @@
       <div id="options">
         <div id="policy">
           <span class="OptionsLabel"><span class = "label">Quarantine<br>Policy</span></span>
-          <select id="QuarantinePolicy">
+          <select id="QuarantinePolicy" disabled="true">
             <option value="leave">Sick Leave</option>
             <option value="stay">No Sick Leave</option>
           </select>
@@ -42,7 +42,7 @@
 
         <div id="ppe">
           <span class="OptionsLabel"><span class = "label">Respiratory<br>Protection</span></span>
-          <select id="PPEPolicy">
+          <select id="PPEPolicy" disabled="true">
             <option value="n95">N95 Respirator</option>
             <option value="mask">Surgical Mask</option>
             <option value="none">None</option>
